@@ -31,7 +31,7 @@ aur.files.tar
 aur.files -> aur.files.tar
 ```
 
-I have the following set in the aurt script to change the default settings in aursync to use MC rather than vifm, and change the destination directory.
+I have the following set in the aurt script to change the default settings in aursync to use mc (midnight commander file manager) rather than vifm, and change the destination directory.
 
 ```
 export PAGER=mc
