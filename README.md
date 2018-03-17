@@ -20,6 +20,10 @@ Local pacman AUR repo: /var/cache/pacman/aur/
 
 Local pacman AUR database files also in: /var/cache/pacman/aur/
 ```
+$ pwd
+/var/cache/pacman/aur
+
+
 $ ls -l
 aur.db.tar
 aur.db -> aur.db.tar
