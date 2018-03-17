@@ -19,13 +19,13 @@ My setup for aurt:
 Local pacman AUR repo: /var/cache/pacman/aur/
 
 Local pacman AUR database files also in: /var/cache/pacman/aur/
-
+```
 $ ls -l
 aur.db.tar
 aur.db -> aur.db.tar
 aur.files.tar
 aur.files -> aur.files.tar
-
+```
 Local pacman AUR repo config file: /etc/aurt.conf
 ```
 #
