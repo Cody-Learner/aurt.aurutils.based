@@ -265,7 +265,7 @@ dependencies () {
 	muallp=$(echo ${muall[@]} | fmt -140)
 
 
-	. aurt-info --depend "${2}"
+	. aurt-info --dependenciesprint "${2}"
 }
    #====================================================== PKGINFO ======================================================
 
