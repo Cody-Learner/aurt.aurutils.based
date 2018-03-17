@@ -17,6 +17,7 @@ For testing aurt and aurt-info, either set up per specs below or edit the script
 My setup for aurt:
 
 Pacman local AUR repo: /var/cache/pacman/aur/
+
 Pacman local AUR database files also in: /var/cache/pacman/aur/
 ```
 $ pwd
