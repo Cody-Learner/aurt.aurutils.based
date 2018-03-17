@@ -150,7 +150,7 @@ Include = /etc/aurt.conf
 
 ```
 
-As soon as aurt and aurt-info become feature stable, I'll begin working on a generic configuration script to set up the basics required fory aurutils usage. 
+As soon as aurt and aurt-info become feature stable, I'll begin working on a generic configuration script to set up the basics required for aurutils usage. 
 
 
 
