@@ -39,7 +39,7 @@ export AURDEST=/home/cody/z-AUR-Aurt.git/
 
 
 
-Local pacman AUR repo config file: /etc/aurt.conf
+Pacman local AUR repo config file: /etc/aurt.conf
 
 ```
 #
