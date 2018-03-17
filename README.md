@@ -30,7 +30,9 @@ aur.db -> aur.db.tar
 aur.files.tar
 aur.files -> aur.files.tar
 ```
+
 Local pacman AUR repo config file: /etc/aurt.conf
+
 ```
 #
 # /etc/aurt.conf
@@ -51,11 +53,19 @@ Local pacman AUR repo config file: /etc/aurt.conf
 # CleanMethod = KeepInstalled
 # UseDelta    = 0.7
 
+
 # Put custom config options below this line.
 
 [options]
 CacheDir    = /var/cache/pacman/aur
 CleanMethod = KeepInstalled
+
+
+[aur]
+SigLevel = Optional TrustAll
+Server = file:///var/cache/pacman/aur
+
+
 ```
 
 
