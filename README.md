@@ -1,4 +1,4 @@
-# Aurt, an Arch AUR helper script (aurutils based)
+# Aurt, AUR helper (aurutils based)
 
 
 Aurt (new version based on aurutils) is an Arch Linux AUR helper bash script currently under development.
