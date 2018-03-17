@@ -1,5 +1,6 @@
 ## Aurt, AUR helper (aurutils based)
 
+![22](https://user-images.githubusercontent.com/36802396/37556068-e7159b9c-29ad-11e8-8076-f85c9f31a067.png)
 
 Aurt (new version based on aurutils) is an Arch Linux AUR helper bash script currently under development.
 
