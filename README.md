@@ -12,7 +12,7 @@ Aurt and aurt-info are currently in alpha phase. The feature set is not yet 100%
 These scripts have been tested on my system managing around 100 AUR packages. All the rough edges I've have encountered so far have been worked out at this point.
 
 
-For testing aurt and aurt-help, either set up per specs below or edit the script to your setup.
+For testing aurt and aurt-info, either set up per specs below or edit the script to your setup.
 
 My setup for aurt:
 
