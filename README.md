@@ -31,6 +31,15 @@ aur.files.tar
 aur.files -> aur.files.tar
 ```
 
+I have the following set in the aurt script to change the default settings in aursync to use MC rather than vifm, and change the destination directory.
+
+```
+export PAGER=mc
+export AURDEST=/home/cody/z-AUR-Aurt.git/
+```
+
+
+
 Local pacman AUR repo config file: /etc/aurt.conf
 
 ```
