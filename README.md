@@ -1,5 +1,5 @@
 ## Aurt, AUR helper (aurutils based)
-
+![1](https://user-images.githubusercontent.com/36802396/37560155-a1e0bdb6-29f0-11e8-827a-291d0def2176.png)
 ![22](https://user-images.githubusercontent.com/36802396/37556068-e7159b9c-29ad-11e8-8076-f85c9f31a067.png)
 
 Aurt (new version based on aurutils) is an Arch Linux AUR helper bash script currently under development.
@@ -173,8 +173,4 @@ Include = /etc/aurt.conf
 ```
 
 As soon as aurt and aurt-info become feature stable, I'll begin working on a generic configuration script to set up the basics required for aurutils usage. 
-
-
-
-![11](https://user-images.githubusercontent.com/36802396/37555846-45a84162-29ab-11e8-9f80-95b3941b5c21.png)
 
