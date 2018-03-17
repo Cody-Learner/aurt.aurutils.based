@@ -1,3 +1,6 @@
+# aurt aurutils based
+
+
 Aurt (this new version based on aurutils) is an Arch Linux AUR helper bash script currently under development.
 
 Aurt is intended to ease the transition into setting up and using aurutils. Aurutils brings AUR helpers to a whole new level with it's feature set and integration with pacman. Along with this comes more work to setup and use. Aurt is a small (~400 lines), very straight forward, easy to follow, edit, customize, etc  bash wrapper script, around aurutils, pacman, etc that ties all the various scripts into a common cli interfce with pacman like commands + some aurt specific, also has a cli command menu on the base interface.
