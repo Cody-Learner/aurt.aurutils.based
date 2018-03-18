@@ -307,14 +307,14 @@ done
  for example, an update report generated in ~1.7 sec as when running [aurt -Qu], it takes ~6.4 min to run [aurt -Vc]. This is on ~100 AUR 
  packages in both cases. This time comparison is also with all the build dependencies installed. If build dep's need installed, add time.
 
- * In a perfect world, this process only be used for VCS packages. However, all is not perfect. It is well known that partial updates are 
- officially unsupported and may lead to system issues including breakage. This includes AUR packages, depending entirely on the package/s. 
+ * In a perfect world, this process would only be used for VCS packages. However, all is not perfect. It is well known that partial updates
+ are officially unsupported and may lead to system issues including breakage. This includes AUR packages, depending entirely on the package/s. 
 
 Read-udinfo
 
 }
-
-while :; do
+aurchain
+while :; doaurchain
 	case "${1}" in
 	--header)		header					;;
 	--installprint1)	installprint1				;;
