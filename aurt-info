@@ -301,7 +301,7 @@ done
  likely becomes a static link, resulting in the aurweb RPC becoming outdated and inaccurate. There is also potential for errors/neglect as 
  is pointed out here: https://wiki.archlinux.org/index.php/.SRCINFO
  
- A workaround is available in aurt to circumvent many of the potential aurweb RPC issues. [Aurt -Vs] runs all* the installed AUR packages
+ A workaround is available in aurt to circumvent many of the potential aurweb RPC issues. [Aurt -Vc] runs all* the installed AUR packages
  through a process of running  makepkg -so, makepkg --printsrcinfo, and [git rev-parse HEAD] -vs- [git ls-remote <url> HEAD].
  This increases the accuracy of the update status availability for AUR packages. The cost of running this operation is time. Rather that 
  for example, an update report generated in ~1.7 sec as when running [aurt -Qu], it takes ~6.4 min to run [aurt -Vc]. This is on ~100 AUR 
