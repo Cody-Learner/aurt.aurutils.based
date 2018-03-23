@@ -9,7 +9,7 @@ pdate=$(date '+%Y-%m-%d')				 			# "${pdate}"     =  todays date
 
 readarray -t pkglist <<< $(echo "$@"|awk '{$1=""; print}'|fmt -1|awk '{$1=$1}1')
 export PAGER=mc
-export AURDEST=/home/jeff/z-AUR-Aurt.git/
+export AURDEST=/home/cody/z-AUR-Aurt.git/
 bold=$(tput bold)
 normal=$(tput sgr0)
 cyan='\033[0;36m'
@@ -78,7 +78,7 @@ remove () {
 
 	. aurt-info --removeprint1 "${2}"
 
-	rm -fr /home/jeff/z-AUR-Aurt.git/"${2}"
+	rm -fr /home/cody/z-AUR-Aurt.git/"${2}"
 	sudo pacman -Rns --color=always "${2}"
 	repoctl remove "${2}" 2>/dev/null
 	repose -dv /var/cache/pacman/aur/aur "${2}"
