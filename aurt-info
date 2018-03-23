@@ -1,5 +1,5 @@
 #!/bin/bash
-# aurt-help 2018-03-16   Depencencies: aurt
+# aurt-help 2018-03-22   Depencencies: aurt
 # date:     year-mo-day
 
 bold=$(tput bold)
@@ -50,19 +50,24 @@ echo -e ${cyan} ${bold} "
 
 searchprint1 () {
 echo -e ${cyan} ${bold} "
-:: pacsearch results:  ${none} ${normal}"
+:: pacsearch ${2}  ${none} ${normal}
+"
 }
 searchprint2 () {
 echo -e ${cyan} ${bold} "
-:: aursearch -P results:  ${none} ${normal}"
+
+:: aursearch -P ${2}  ${none} ${normal}
+"
 }
 searchprint3 () {
 echo -e ${cyan} ${bold} "
-:: aursearch -Fv results:  ${none} ${normal}"
+:: aursearch -Fv ${2}  ${none} ${normal}
+"
 }
 searchprint4 () {
 echo -e ${cyan} ${bold} "
-:: pacman -Sii results:  ${none} ${normal}"
+:: pacman -Sii ${2}  ${none} ${normal}
+"
 }
    #======================================== removeprint =========================================
 
@@ -73,7 +78,7 @@ echo -e ${cyan} ${bold} "
 }
 removeprint2 () {
 echo -e ${cyan} ${bold} "
-:: ${2} has been removed  ${none} ${normal}
+:: ${2} + dependencies removed  ${none} ${normal}
 "
 }
 removeprint3 () {
@@ -81,7 +86,7 @@ echo -e ${cyan} ${bold} "
 :: ${2} is still installed  ${none} ${normal}
 "
 }
-   #======================================== updatesprint ========================================
+   #======================================== udreportprint ========================================
 
 udreportprint1 () {
 echo -e ${cyan} ${bold} "
@@ -153,7 +158,7 @@ echo -e ${cyan}${bold}":: Will build and install with aurutils aursync script. $
 dependenciesprint () {
 echo -e ${cyan} ${bold} "
 :: Dependency Details For:				${eko} ${normal} ${none}
-   ${2}
+   ${3}
 ${eko} ${cyan} ${bold} 
 :: Unmet AUR Dependencies (${#uaur[@]})			${eko} ${normal} ${none}
    ${uaurp[@]}
@@ -172,27 +177,26 @@ ${eko} ${cyan} ${bold}
 }
    #======================================== pkginfoprint ========================================
 
-			# aurt "${2}" (package) is ${1} for pkginfoprint (caused by shift in opt parsing)
 pkginfoprint1 () {
 echo -e ${cyan} ${bold} "
-:: ${1} Is NOT AVAILABLE in official or AUR repos ${none} ${normal} 
+:: ${2} Is NOT AVAILABLE in official or AUR repos ${none} ${normal} 
 "
 }
 pkginfoprint2 () {
 echo -e ${cyan} ${bold}	"
-:: ${1} Is INSTALLED, AUR repo package ${none} ${normal} "
+:: ${2} Is INSTALLED, AUR repo package ${none} ${normal} "
 }
 pkginfoprint3 () {
 echo -e ${cyan} ${bold} "
-:: ${1} Is INSTALLED, official repo package ${none} ${normal} "
+:: ${2} Is INSTALLED, official repo package ${none} ${normal} "
 }
 pkginfoprint4 () {
 echo -e ${cyan} ${bold}	"
-:: ${1} Is NOT INSTALLED, official repos package ${none} ${normal} "
+:: ${2} Is NOT INSTALLED, official repos package ${none} ${normal} "
 }
 pkginfoprint5 () {
 echo -e ${cyan} ${bold}	"
-:: ${1} Is NOT INSTALLED, AUR repo package ${none} ${normal} "
+:: ${2} Is NOT INSTALLED, AUR repo package ${none} ${normal} "
 }
 pkginfoprint6 () {
 echo "${aurp}
@@ -301,20 +305,20 @@ done
  likely becomes a static link, resulting in the aurweb RPC becoming outdated and inaccurate. There is also potential for errors/neglect as 
  is pointed out here: https://wiki.archlinux.org/index.php/.SRCINFO
  
- A workaround is available in aurt to circumvent many of the potential aurweb RPC issues. [Aurt -Vc] runs all* the installed AUR packages
+ A workaround is available in aurt to circumvent many of the potential aurweb RPC issues. [Aurt -Vs] runs all* the installed AUR packages
  through a process of running  makepkg -so, makepkg --printsrcinfo, and [git rev-parse HEAD] -vs- [git ls-remote <url> HEAD].
  This increases the accuracy of the update status availability for AUR packages. The cost of running this operation is time. Rather that 
  for example, an update report generated in ~1.7 sec as when running [aurt -Qu], it takes ~6.4 min to run [aurt -Vc]. This is on ~100 AUR 
  packages in both cases. This time comparison is also with all the build dependencies installed. If build dep's need installed, add time.
 
- * In a perfect world, this process would only be used for VCS packages. However, all is not perfect. It is well known that partial updates
- are officially unsupported and may lead to system issues including breakage. This includes AUR packages, depending entirely on the package/s. 
+ * In a perfect world, this process only be used for VCS packages. However, all is not perfect. It is well known that partial updates are 
+ officially unsupported and may lead to system issues including breakage. This includes AUR packages, depending entirely on the package/s. 
 
 Read-udinfo
 
 }
-aurchain
-while :; doaurchain
+
+while :; do
 	case "${1}" in
 	--header)		header					;;
 	--installprint1)	installprint1				;;
@@ -322,13 +326,13 @@ while :; doaurchain
 	--forceinstallprint1)	installprint1				;;
 	--forceinstallprint2)	installprint2				;;
 	--updateprint)		updateprint				;;
-	--searchprint1)		searchprint1				;;
-	--searchprint2)		searchprint2				;;
-	--searchprint3)		searchprint3				;;
-	--searchprint4)		searchprint4				;;
-	--removeprint1)		removeprint1				;;
-	--removeprint2)		removeprint2				;;
-	--removeprint3)		removeprint3				;;
+	--searchprint1)		searchprint1	 	"${@}"		;;
+	--searchprint2)		searchprint2		"${@}"		;;
+	--searchprint3)		searchprint3		"${@}"		;;
+	--searchprint4)		searchprint4		"${@}"		;;
+	--removeprint1)		removeprint1		"${@}"		;;
+	--removeprint2)		removeprint2		"${@}"		;;
+	--removeprint3)		removeprint3		"${@}"		;;
 	--syncprint1)		syncprint1				;;
 	--syncprint2)		syncprint2				;;
 	--syncprint3)		syncprint3				;;
@@ -340,15 +344,15 @@ while :; doaurchain
 	--vcsupdateprint3)	vcsupdateprint3				;;
 	--vcsupdateprint4)	vcsupdateprint4				;;
 	--vcsupdateprint5)	vcsupdateprint5				;;
-	--dependenciesprint)	dependenciesprint	"${2}"		;;
-	--udreportprint1)	udreportprint1		"${2}"		;;
-	--udreportprint2)	udreportprint2		"${2}"		;;
-	--pkginfoprint1)	pkginfoprint1		"${2}"		;;
-	--pkginfoprint2)	pkginfoprint2		"${2}"		;;
-	--pkginfoprint3)	pkginfoprint3		"${2}"		;;
-	--pkginfoprint4)	pkginfoprint4		"${2}"		;;
-	--pkginfoprint5)	pkginfoprint5		"${2}"		;;
-	--pkginfoprint6)	pkginfoprint6		"${2}"		;;
+	--dependenciesprint)	dependenciesprint	"${@}"		;;
+	--udreportprint1)	udreportprint1				;;
+	--udreportprint2)	udreportprint2				;;
+	--pkginfoprint1)	pkginfoprint1		"${@}"		;;
+	--pkginfoprint2)	pkginfoprint2		"${@}"		;;
+	--pkginfoprint3)	pkginfoprint3		"${@}"		;;
+	--pkginfoprint4)	pkginfoprint4		"${@}"		;;
+	--pkginfoprint5)	pkginfoprint5		"${@}"		;;
+	--pkginfoprint6)	pkginfoprint6		"${@}"		;;
 	--packagelistprint1)	packagelistprint1			;;
 	--packagelistprint2)	packagelistprint2			;;
 	--packagelistprint3)	packagelistprint3			;;

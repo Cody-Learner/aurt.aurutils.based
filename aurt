@@ -1,5 +1,5 @@
 #!/bin/bash
-# aurt 2018-03-16   Depencencies: sudo base-devel cower aurutils mc
+# aurt 2018-03-22   Depencencies: sudo base-devel cower aurutils mc
 # date:year-mo-day
 # shellcheck disable=SC1091,SC2034,SC2002,SC2116
 
@@ -9,7 +9,7 @@ pdate=$(date '+%Y-%m-%d')				 			# "${pdate}"     =  todays date
 
 readarray -t pkglist <<< $(echo "$@"|awk '{$1=""; print}'|fmt -1|awk '{$1=$1}1')
 export PAGER=mc
-export AURDEST=/home/cody/z-AUR-Aurt.git/
+export AURDEST=/home/jeff/z-AUR-Aurt.git/
 bold=$(tput bold)
 normal=$(tput sgr0)
 cyan='\033[0;36m'
@@ -60,25 +60,25 @@ update () {
 
 search () {
 
-	. aurt-info --searchprint1			
+	. aurt-info --searchprint1 "${2}"			
 	pacsearch "${2}"
 
-	. aurt-info --searchprint2
+	. aurt-info --searchprint2 "${2}"
 	aursearch -P "${2}"
 
-	. aurt-info --searchprint3
+	. aurt-info --searchprint3 "${2}"
 	aursearch -Fv "${2}" 
 
-	. aurt-info --searchprint4
+	. aurt-info --searchprint4 "${2}"
 	pacman -Sii --color=always "${2}" 2>/dev/null
 }
    #====================================================== REMOVE =======================================================
 
 remove () {
 
-	. aurt-info --removeprint1
+	. aurt-info --removeprint1 "${2}"
 
-	rm -fr /home/cody/z-AUR-Aurt.git/"${2}"
+	rm -fr /home/jeff/z-AUR-Aurt.git/"${2}"
 	sudo pacman -Rns --color=always "${2}"
 	repoctl remove "${2}" 2>/dev/null
 	repose -dv /var/cache/pacman/aur/aur "${2}"
@@ -87,9 +87,9 @@ remove () {
 
 if 	[[ -z "$pkg" ]]; then
 
-	. aurt-info --removeprint2
+	. aurt-info --removeprint2 "${2}"
     else
-	. aurt-info --removeprint3
+	. aurt-info --removeprint3 "${2}"
 fi
 }
    #=================================================== UDREPORT ========================================================
@@ -265,7 +265,7 @@ dependencies () {
 	muallp=$(echo ${muall[@]} | fmt -140)
 
 
-	. aurt-info --dependenciesprint "${2}"
+	. aurt-info --dependenciesprint "${@}"
 }
    #====================================================== PKGINFO ======================================================
 
