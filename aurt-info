@@ -1,6 +1,7 @@
 #!/bin/bash
 # aurt-help 2018-03-23   Depencencies: aurt
 # date:     year-mo-day
+# shellcheck disable=SC2002,SC2086,SC2154
 
 bold='\033[1m'
 cyan='\033[0;96m'
@@ -161,18 +162,18 @@ echo -e ${cyan} ${bold} "
    ${3}
 ${eko} ${cyan} ${bold} 
 :: Unmet AUR Dependencies (${#uaur[@]})			${eko} ${none}
-   ${uaurp[@]}
+   ${uaurp[*]}
 ${eko} ${cyan} ${bold}
 :: Unmet Official packages (${#uoff[@]})		${eko} ${none}
-   ${uoffp[@]}
+   ${uoffp[*]}
 ${eko} ${cyan} ${bold}
 :: AUR Dependencies (${#aurd[@]})			${eko} ${none}
-   ${aurdp[@]}
+   ${aurdp[*]}
 ${eko} ${cyan} ${bold}
 :: Dependency Tree* (${#muall[@]})			${eko} ${none}
-   ${muallp[@]}
+   ${muallp[*]}
 
-
+ 
 *(see: "full dependency tree",  man aurchain)"
 }
    #======================================== pkginfoprint ========================================
@@ -283,9 +284,8 @@ cat << Read-Help
 Read-Help
 
 while true
-do read -t 5 -n 1 -p ":: Want to read Updating AUR packages info?      yes/no (5 sec timeout to no)
-	" -s yn
-		if [[ $? != 0 ]]; then echo; exit; fi
+do read -r -t 5 -n 1 -p ":: Want to read Updating AUR packages info?      yes/no (5 sec timeout to no)
+" -s yn || { echo && exit; }
 		echo
 		case $yn in
 		y|yes) break	 ;;
