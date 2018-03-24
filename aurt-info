@@ -1,12 +1,12 @@
 #!/bin/bash
-# aurt-help 2018-03-22   Depencencies: aurt
+# aurt-help 2018-03-23   Depencencies: aurt
 # date:     year-mo-day
 
-bold=$(tput bold)
-normal=$(tput sgr0)
+bold='\033[1m'
+cyan='\033[0;96m'
+none='\033[00m'
+
 eko=$(echo -e)
-cyan='\033[0;36m'
-none='\033[0m'
 
 header () {
 echo -e "${cyan}"
@@ -15,14 +15,14 @@ cat << Read-Header
  |   Aurt, a tiny AUR helper script.    USAGE:  $ aurt [operation] [package]      |
  |--------------------------------------------------------------------------------|
  |  -S   Install And Or Update            -pd  Package - Dependency Details       |
- |  -Sf  Force Install Or Update          -pf  Package - Files Provided By        |
- |  -Syu Update All AUR packages          -pi  Package - Installed? Repo? Avail?  |
+ |  -Sf  Force Install Or Update          -pf  Package - What Package Owns File   |
+ |  -Syu Update All AUR packages          -pi  Package - Installed? Repo? Info?   |
  |  -Ss  Search For AUR Packages          -la  List    - All AUR Package          |
- |  -R   Remove Pkg & Related Data        -lo  List    - Orphan Packages          |
- |  -Qu  Update Report                    -lv  List    - VCS Packages             |
- |  -Vc  VCS Update Sync & Report         -log Pacman Log                         |
- |  -Vu  VCS Update                       -h   Help                               |
- |                      -T30  Top 30 Largest Installed Pkgs                       |
+ |  -R   Remove Pkg & Related Data        -lf  List    - Files Provided By Pkg    |
+ |  -Qu  Update Report                    -lo  List    - Orphan Packages          |
+ |  -Vc  VCS Update Sync & Report         -lv  List    - VCS Packages             |
+ |  -Vu  VCS Update                       -log Pacman Log                         |
+ |  -T30 Top 30 Largest Packages          -h   Help                               |
  |================================================================================|
 Read-Header
 echo -e "${none}"
@@ -30,12 +30,12 @@ echo -e "${none}"
    #======================================== installprint ========================================
 installprint1 () {
 echo -e ${cyan} ${bold} "
-:: ${verify}: installed ${none} ${normal}
+:: ${verify}: installed ${none}
 "
 }
 installprint2 () {
 echo -e ${cyan} ${bold} "
-:: ERROR ${verify} did not install ${none} ${normal}
+:: ERROR ${verify} did not install ${none}
 "
 }
    #======================================== updateprint =========================================
@@ -43,133 +43,133 @@ echo -e ${cyan} ${bold} "
 updateprint () {
 
 echo -e ${cyan} ${bold} "
-:: Updating AUR packages ....  ${none} ${normal}
+:: Updating AUR packages ....  ${none}
 "
 }
    #======================================== searchprint =========================================
 
 searchprint1 () {
 echo -e ${cyan} ${bold} "
-:: pacsearch ${2}  ${none} ${normal}
+:: pacsearch ${2}  ${none}
 "
 }
 searchprint2 () {
 echo -e ${cyan} ${bold} "
 
-:: aursearch -P ${2}  ${none} ${normal}
+:: aursearch -P ${2}  ${none}
 "
 }
 searchprint3 () {
 echo -e ${cyan} ${bold} "
-:: aursearch -Fv ${2}  ${none} ${normal}
+:: aursearch -Fv ${2}  ${none}
 "
 }
 searchprint4 () {
 echo -e ${cyan} ${bold} "
-:: pacman -Sii ${2}  ${none} ${normal}
+:: pacman -Sii ${2}  ${none}
 "
 }
    #======================================== removeprint =========================================
 
 removeprint1 () {
 echo -e ${cyan} ${bold} "
-:: Removing ${2}  ${none} ${normal}
+:: Removing ${2}  ${none}
 "
 }
 removeprint2 () {
 echo -e ${cyan} ${bold} "
-:: ${2} + dependencies removed  ${none} ${normal}
+:: ${2} + dependencies removed  ${none}
 "
 }
 removeprint3 () {
 echo -e ${cyan} ${bold} "
-:: ${2} is still installed  ${none} ${normal}
+:: ${2} is still installed  ${none}
 "
 }
    #======================================== udreportprint ========================================
 
 udreportprint1 () {
 echo -e ${cyan} ${bold} "
-:: Updates available* ($audN) ${normal} ${none}
+:: Updates available* ($audN) ${none}
 $aud
 ${eko} ${cyan} ${bold} 
-:: Installed versions newer than AUR version* ($nwrN) ${normal} ${none}
+:: Installed versions newer than AUR version* ($nwrN) ${none}
 $nwr
 ${eko} ${cyan} ${bold} 
-:: Installed versions same as AUR version* ($equN) ${normal} ${none} "
+:: Installed versions same as AUR version* ($equN) ${none} "
 }
 udreportprint2 () {
-echo "
+echo -e "
 :: The update info in this report is obtained from the aurweb RPC."
 echo -e ${cyan}${bold}":: *see: aurt help for additional info.
-" ${normal} ${none}
+" ${none}
 }
    #======================================== syncprint ===========================================
 
 syncprint1 () {
 echo -e ${cyan} ${bold} "
-:: Creating AUR package check list ...." ${none} ${normal}
+:: Creating AUR package check list ...." ${none}
 }
 syncprint2 () {
 echo -e ${cyan}${bold}":: Checking for updates ....
-" ${none} ${normal}
+" ${none}
 }
 syncprint3 () {
-echo ":: Checking : ${P}
+echo -e ":: Checking : ${P}
 :: Version  : ${C1} "
 }
 syncprint4 () {
-echo ${bold}":: Available: ${C2} ................... UPDATE AVAILABLE" ${normal}
+echo -e ${cyan}${bold}":: Available: ${C2} ................... UPDATE AVAILABLE" ${none}
 }
 syncprint5 () {
-echo ${bold}":: Checking : ${P} .................... UPDATE AVAILABLE ${normal}
+echo -e ${cyan}${bold}":: Checking : ${P} .................... UPDATE AVAILABLE ${none}
 :: Local git HEAD : ${C4}
 :: Remote git HEAD: ${C3}"
 }
 syncprint6 () {
-echo "
+echo -e "
 :: All AUR packages up to date.
 "
 }
    #======================================== vcsupdateprint ======================================
 
 vcsupdateprint5 () {
-echo " 
+echo -e " 
 :: Update data integrity compromised. Try running 'aurt -Vc' again.
 "
 }
 vcsupdateprint1 () {
-echo "
+echo -e "
 :: AUR update data unavailable. Run 'aurt -Vc' before 'aurt -Vu' update.
 "
 }
 vcsupdateprint2 () {
-echo "
+echo -e "
 AUR Packages ($N) $(cat /tmp/updates | fmt -1000)"
 }
 vcsupdateprint3 () {
 date -r /tmp/updates | awk '{print ":: Running update list from: " $2, $3, $6, "@", $4}' 
 }
 vcsupdateprint4 () {
-echo -e ${cyan}${bold}":: Will build and install with aurutils aursync script. ${normal} ${none}" 
+echo -e ${cyan}${bold}":: Will build and install with aurutils aursync script. ${none}" 
 }
    #======================================== dependenciesprint ===================================
 
 dependenciesprint () {
 echo -e ${cyan} ${bold} "
-:: Dependency Details For:				${eko} ${normal} ${none}
+:: Dependency Details For:				${eko} ${none}
    ${3}
 ${eko} ${cyan} ${bold} 
-:: Unmet AUR Dependencies (${#uaur[@]})			${eko} ${normal} ${none}
+:: Unmet AUR Dependencies (${#uaur[@]})			${eko} ${none}
    ${uaurp[@]}
 ${eko} ${cyan} ${bold}
-:: Unmet Official packages (${#uoff[@]})		${eko} ${normal} ${none}
+:: Unmet Official packages (${#uoff[@]})		${eko} ${none}
    ${uoffp[@]}
 ${eko} ${cyan} ${bold}
-:: AUR Dependencies (${#aurd[@]})			${eko} ${normal} ${none}
+:: AUR Dependencies (${#aurd[@]})			${eko} ${none}
    ${aurdp[@]}
 ${eko} ${cyan} ${bold}
-:: Dependency Tree* (${#muall[@]})			${eko} ${normal} ${none}
+:: Dependency Tree* (${#muall[@]})			${eko} ${none}
    ${muallp[@]}
 
 
@@ -179,67 +179,67 @@ ${eko} ${cyan} ${bold}
 
 pkginfoprint1 () {
 echo -e ${cyan} ${bold} "
-:: ${2} Is NOT AVAILABLE in official or AUR repos ${none} ${normal} 
+:: ${2} Is NOT AVAILABLE in official or AUR repos ${none}
 "
 }
 pkginfoprint2 () {
 echo -e ${cyan} ${bold}	"
-:: ${2} Is INSTALLED, AUR repo package ${none} ${normal} "
+:: ${2} Is INSTALLED, AUR repo package ${none} "
 }
 pkginfoprint3 () {
 echo -e ${cyan} ${bold} "
-:: ${2} Is INSTALLED, official repo package ${none} ${normal} "
+:: ${2} Is INSTALLED, official repo package ${none} "
 }
 pkginfoprint4 () {
 echo -e ${cyan} ${bold}	"
-:: ${2} Is NOT INSTALLED, official repos package ${none} ${normal} "
+:: ${2} Is NOT INSTALLED, official repos package ${none} "
 }
 pkginfoprint5 () {
 echo -e ${cyan} ${bold}	"
-:: ${2} Is NOT INSTALLED, AUR repo package ${none} ${normal} "
+:: ${2} Is NOT INSTALLED, AUR repo package ${none} "
 }
 pkginfoprint6 () {
-echo "${aurp}
+echo -e "${aurp}
 "
 }
    #======================================== packagelistprint ====================================
 
 packagelistprint1 () {
 echo -e ${cyan} ${bold} "		
-:: AUR Package List (${#pkglst[@]} packages found)" ${none} ${normal}
+:: AUR Package List (${#pkglst[@]} packages found)" ${none}
 }
 packagelistprint2 () {
 echo -e ${cyan} ${bold} "
-:: Package:            Version:" ${none} ${normal}
+:: Package:            Version:" ${none}
 }
 packagelistprint3 () {
 echo -e ${cyan} ${bold} "
-:: Contents Of Local AUR Repo" ${none} ${normal}
+:: Contents Of Local AUR Repo" ${none}
 }
    #======================================== orphprint ===========================================
 orphprint () {
 echo -e ${cyan} ${bold} "
-:: Orphan packages ${none} ${normal} 
+:: Orphan packages ${none} ${none} 
 "
 }
    #======================================== devprint ============================================
 devprint () {
 
 echo -e ${cyan} ${bold} "
-:: VCS AUR packages ${none} ${normal}
+:: VCS AUR packages ${none} ${none}
 "
 }
    #======================================== bysizeprint =========================================
 bysizeprint () {
 echo -e ${cyan} ${bold} "
-:: Top 30 packages by size ${none} ${normal}
+:: Top 30 packages by size ${none}
 "
 }
    #======================================== parametererrorprint =================================
 parametererrorprint () {
 
 echo -e ${cyan} ${bold} "
-::  Input Error: Please try again or read: aurt --help ${none} ${normal} 
+::  Input Error: Please try again or read: aurt --help ${none}
 "
 }
    #======================================== help ================================================
@@ -283,7 +283,7 @@ cat << Read-Help
 Read-Help
 
 while true
-do read -t 5 -n 1 -p "::${bold} Want to read Updating AUR packages info?      yes/no ${normal} (5 sec timeout to no)
+do read -t 5 -n 1 -p ":: Want to read Updating AUR packages info?      yes/no (5 sec timeout to no)
 	" -s yn
 		if [[ $? != 0 ]]; then echo; exit; fi
 		echo
@@ -293,11 +293,8 @@ do read -t 5 -n 1 -p "::${bold} Want to read Updating AUR packages info?      ye
 		* ) echo "y-n ?" ;;
 		esac
 done
-
+echo -e ${cyan}${bold} "Updating AUR package:" ${eko}${none} 
 { cat | fmt -145; } << Read-udinfo
-
- ${bold} Updating AUR packages info: ${normal}
-
  Aurt has two methods available for updating all installed AUR packages. The first method, [aurt -Syu] uses [aursync -u]. This method 
  obtains information from the aurweb RPC and is by far the most commonly used method by AUR helpers to check package update status. 
  The accuracy of the information using this method depends on several factors. These range from the AUR package standards and enforcement,

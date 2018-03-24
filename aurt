@@ -1,20 +1,16 @@
 #!/bin/bash
-# aurt 2018-03-22   Depencencies: sudo base-devel cower aurutils mc
+# aurt 2018-03-23   Depencencies: sudo base-devel cower aurutils mc
 # date:year-mo-day
+
 # shellcheck disable=SC1091,SC2034,SC2002,SC2116
 
-basedir="${HOME}"/z-AUR-Aurt                             			# "${basedir}"   =  base directory for build
-builddir="${HOME}"/z-AUR-Aurt/"${2}"                     			# "${builddir}"  =  build directory
-pdate=$(date '+%Y-%m-%d')				 			# "${pdate}"     =  todays date
-
-readarray -t pkglist <<< $(echo "$@"|awk '{$1=""; print}'|fmt -1|awk '{$1=$1}1')
 export PAGER=mc
-export AURDEST=/home/cody/z-AUR-Aurt.git/
-bold=$(tput bold)
-normal=$(tput sgr0)
-cyan='\033[0;36m'
-none='\033[0m'
-T=timer
+export AURDEST="${HOME}"/z-AUR-Aurt.git/
+pdate=$(date '+%Y-%m-%d')
+readarray -t pkglist <<< $(echo "$@"|awk '{$1=""; print}'|fmt -1|awk '{$1=$1}1')
+bold='\033[1m'
+cyan='\033[0;96m'
+none='\033[00m'
 
    #===================================================== INSTALL =======================================================
 
@@ -67,7 +63,7 @@ search () {
 	aursearch -P "${2}"
 
 	. aurt-info --searchprint3 "${2}"
-	aursearch -Fv "${2}" 
+	aursearch -Fv "${2}"
 
 	. aurt-info --searchprint4 "${2}"
 	pacman -Sii --color=always "${2}" 2>/dev/null
@@ -78,7 +74,7 @@ remove () {
 
 	. aurt-info --removeprint1 "${2}"
 
-	rm -fr /home/cody/z-AUR-Aurt.git/"${2}"
+	rm -fr "${HOME}"/z-AUR-Aurt.git/"${2}"
 	sudo pacman -Rns --color=always "${2}"
 	repoctl remove "${2}" 2>/dev/null
 	repose -dv /var/cache/pacman/aur/aur "${2}"
@@ -133,7 +129,7 @@ sync () {
 	. aurt-info --syncprint1
 
 if 	[[ -e /tmp/updates ]]; then
-	rm /tmp/updates || echo "ERROR Removing /tmp/updates"; exit
+	rm /tmp/updates || exit
 fi
 							# Create list AUR packages to check.
 	dlist=$(pacman -Qq|aursift 2>/dev/null)
@@ -212,7 +208,7 @@ fi
 while true									# Message user, get authorization to proceed with update
 do 	read -r -n 1 -p ":: Proceed with update? [Y/n]
 " -s yn
-	echo -e ${none} ${normal}
+	echo -e ${none}
 	case $yn in
 		y|yes) break	 	;;
 		n|no)  return; exit	;;
@@ -272,7 +268,7 @@ dependencies () {
 pkginfo () {
 		addinfo () {
 			while true
-			do read -t 5 -n 1 -p "::${bold} Want additional info?                yes/no ${normal} (5 sec timeout to no)
+			do read -t 5 -n 1 -p ":: Want additional info?                yes/no (5 sec timeout to no)
 			" -s yn
 				if [[ $? != 0 ]]; then echo; exit; fi
 				echo
@@ -365,11 +361,6 @@ parametererror () {
 
 	. aurt-info --parametererrorprint
 }
-
-timer () {
-	echo -ne "5"; sleep .5; echo -ne "-"; sleep .5; echo -ne "4"; sleep .5; echo -ne "-"; sleep .5; echo -ne "3"; sleep .5
-	echo -ne "-"; sleep .5; echo -ne "2"; sleep .5; echo -ne "-"; sleep .5; echo -ne "1"; sleep .5; echo
-}
    #=================================================== RUN FUNCTIONS ===================================================
 
 if 	[[ -z "$*" ]]; then aurt-info --header; fi
@@ -378,18 +369,19 @@ while	:; do
 	case "${1}" in
 	    -S|--install)	install			"${@}"				;;
 	   -Sf|--force)		forceinstall		"${@}"				;;
-	  -Syu|--update)	update							;;
+	  -Syu|--udate)		update							;;
 	   -Ss|--search)	search			"${@}" 				;;
 	    -R|--remove)	remove			"${@}"				;;
 	   -Qu|--udr)		udreport						;;
 	   -Vc|--vcscheck)	sync							;;
 	   -Vu|--vcsupdate)	vcsupdate						;;
-	   -pd|--depends)	dependencies		"${@}"				;;
-	   -pf|--files)		echo ; pacman -Ql	"${2}" |awk '{print $2}'; echo	;;
-	   -pi|--info)		pkginfo			"${@}"				;;
-	   -la|--list)		packagelist		"${@}"				;;
-           -lo|--orphans)	orph							;;
-	   -lv|--vcs)		dev							;;
+	   -pd|--pdepends)	dependencies		"${@}"				;;
+	   -pf|--pfiles)	pkgfile 		"${2}"				;;
+	   -pi|--pinfo)		pkginfo			"${@}"				;;
+	   -la|--plist)		packagelist		"${@}"				;;
+           -lf|--lfiles)	echo ; pacman -Ql	"${2}" |awk '{print $2}'; echo	;;
+           -lo|--lorphans)	orph							;;
+	   -lv|--lvcs)		dev							;;
           -log|--paclog)	paclog							;;
 	  -T30|--bysize)	bysize							;;
 	    -h|--help)		. aurt-info --help	"${@}"				;;
