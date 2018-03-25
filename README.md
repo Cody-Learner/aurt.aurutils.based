@@ -19,18 +19,17 @@ For testing aurt and aurt-info, either set up per specs below or edit the script
 
 My setup for aurt:
 
-Pacman local AUR repo: /var/cache/pacman/aur/
+Pacman local AUR repo                  : /var/cache/pacman/aur/
+Pacman local AUR database also setup in: /var/cache/pacman/aur/
 
-Pacman local AUR database files also in: /var/cache/pacman/aur/
+The following should be present in /var/cache/pacman/aur after setup.
 ```
-$ pwd
-/var/cache/pacman/aur
+$ ls -go /var/cache/pacman/aur | awk '/aur[.db|.files]/ {print $7" "$8" "$9}'
 
-$ ls -l
-aur.db.tar
 aur.db -> aur.db.tar
-aur.files.tar
+aur.db.tar  
 aur.files -> aur.files.tar
+aur.files.tar
 ```
 
 I have the following set in the aurt script to change the default settings in aursync to use mc (midnight commander file manager) rather than vifm, and change the destination directory.
