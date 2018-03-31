@@ -177,3 +177,4 @@ Include = /etc/aurt.conf
 
 As soon as aurt and aurt-info become feature stable, I'll begin working on a generic configuration script to set up the basics required for aurutils usage. 
 
+![build](https://user-images.githubusercontent.com/36802396/38160148-49ddbf1a-346d-11e8-87f8-8ce9b96e2cde.png)
