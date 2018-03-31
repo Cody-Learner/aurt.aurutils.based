@@ -1,5 +1,5 @@
 #!/bin/bash
-# aurt-help 2018-03-23   Depencencies: aurt
+# aurt-help 2018-03-30   Depencencies: aurt
 # date:     year-mo-day
 # shellcheck disable=SC2002,SC2086,SC2154
 
@@ -22,8 +22,8 @@ cat << Read-Header
  |  -R   Remove Pkg & Related Data        -lf  List    - Files Provided By Pkg    |
  |  -Qu  Update Report                    -lo  List    - Orphan Packages          |
  |  -Vc  VCS Update Sync & Report         -lv  List    - VCS Packages             |
- |  -Vu  VCS Update                       -log Pacman Log                         |
- |  -T30 Top 30 Largest Packages          -h   Help                               |
+ |  -Vu  VCS Update                       -lm  List    - All AUR makedeps         |
+ |  -T30 Top 30 Largest Packages          -log Pacman Log         -h   Help       |
  |================================================================================|
 Read-Header
 echo -e "${none}"
@@ -243,6 +243,16 @@ echo -e ${cyan} ${bold} "
 ::  Input Error: Please try again or read: aurt --help ${none}
 "
 }
+   #======================================== makedepz =================================
+makedepz1 () {
+
+echo -e ${cyan} ${bold} "
+:: List of all AUR pkgs makedeps: ${none}"
+}
+makedepz2 () {
+echo -e ${cyan} ${bold} "
+:: Missing makedeps: ${none}"
+}
    #======================================== help ================================================
 help () {
 
@@ -357,6 +367,8 @@ while :; do
 	--devprint)		devprint				;;
 	--bysizeprint)		bysizeprint				;;
 	--parametererrorprint)	parametererrorprint			;;
+	--makedepz1)		makedepz1				;;
+	--makedepz2)		makedepz2				;;
 	--help)			help					;;
 	        *)		break
 	esac
