@@ -1,5 +1,5 @@
 #!/bin/bash
-# aurt 2018-03-23   Depencencies: sudo base-devel cower aurutils mc
+# aurt 2018-03-30   Depencencies: sudo base-devel cower aurutils mc
 # date:year-mo-day
 # shellcheck disable=SC1091,SC2002
 
@@ -275,44 +275,55 @@ pkginfo () {
 				esac
 			done
 		}
-										# IS THE PACKAGE AVAILABLE ?
+													# IS THE PACKAGE AVAILABLE ?
 if	[[ -z $(pacman -Ssq "${2}" 2>/dev/null |awk '/^'"${2}"'$/') ]] &&
 	[[ -z $(cower -i "${2}") ]]; then						
 
 	. aurt-info --pkginfoprint1 "${2}"
 	exit
-fi										# IS INSTALLED, WANT INFO ?
-
+fi													# IS INSTALLED, WANT INFO ?
 if	[[ $(pacman -Qq "${2}" 2>/dev/null | aursift 2>/dev/null) = "${2}" ]]; then
 
 	. aurt-info --pkginfoprint2 "${2}"
 	addinfo
-	cower -i "${2}"; exit
-fi
+	info="$(pacman -Sii ${2} 2>&1)"
 
+		if	[[ $(echo ${info} | awk '{print $1}') = error: ]]; then
+			cower -i "${2}"
+			else
+			echo "${info}"; echo
+		fi
+	exit
+fi
 if	[[ -n $(pacman -Qq "${2}" 2>/dev/null) ]]; then
 
 	. aurt-info --pkginfoprint3 "${2}"
 
 	addinfo
 	pacman -Sii --color=always "${2}" ; exit
+fi													# NOT INSTALLED, WANT INFO ?
+if	[[ $(pacman -Ssq "${2}" 2>/dev/null | aursift 2>/dev/null |awk '/^'"${2}"'$/') = "${2}" ]] &&
+	[[ $(cower -sq "${2}" |awk '/^'"${2}"'$/') = "${2}" ]]; then
+
+	. aurt-info --pkginfoprint5 "${2}"
+
+	addinfo
+	pacman -Sii --color=always "${2}" ; exit
 fi
-										# NOT INSTALLED, WANT INFO ?
+if	[[ -z $(pacman -Ssq "${2}" 2>/dev/null | aursift 2>/dev/null |awk '/^'"${2}"'$/') ]] &&
+	[[ $(cower -sq "${2}" |awk '/^'"${2}"'$/') = "${2}" ]]; then
+
+	. aurt-info --pkginfoprint5 "${2}"
+
+	addinfo
+	cower -i "${2}"; exit
+fi
 if	[[ $(pacman -Ssq "${2}" 2>/dev/null |awk '/^'"${2}"'$/') = "${2}" ]]; then
 
 	. aurt-info --pkginfoprint4 "${2}"
 
 	addinfo
 	pacman -Sii --color=always "${2}" ; exit
-fi
-if	aurp=$(cower -i "${2}")
-	[[ $(echo "$aurp"|awk '/Name/ {print $3}') = "${2}" ]]; then
-
-	. aurt-info --pkginfoprint5 "${2}"
-	addinfo
-	. aurt-info --pkginfoprint6 "${2}"
-
-	exit
 fi
 }
    #=================================================== PACKAGELIST =====================================================
@@ -350,12 +361,26 @@ bysize () {
 
 	. aurt-info --bysizeprint
 	expac -H M '%m\t%n' | sort -hr | head -n 30 | column -t -R1 ; echo
+#	expac --timefmt='%F %T' '%l %n' | sort -r | head -n 30 | column -t ### by date
 }
    #=================================================== PARAMERROR ======================================================
 
 parametererror () {
 
 	. aurt-info --parametererrorprint
+}
+   #=================================================== MAKEDEPZ ======================================================
+
+makedepz () {
+
+
+	. aurt-info --makedepz1
+	cower -i --format=%M --listdelim=' ' $(pacman -Qq | aursift 2>/dev/null) | fmt -1 | \
+	awk '!seen[$0]++' | awk -F'<|>|=' '{print $1}' >/tmp/mdz
+	cat /tmp/mdz
+
+	. aurt-info --makedepz2
+	pacman -Qq $(cat /tmp/mdz) 2>&1 1>/dev/null | awk -F"'" '{print $2}'; echo
 }
    #=================================================== RUN FUNCTIONS ===================================================
 
@@ -376,6 +401,7 @@ while	:; do
 	   -pi|--pinfo)		pkginfo			"${@}"				;;
 	   -la|--plist)		packagelist		"${@}"				;;
            -lf|--lfiles)	echo ; pacman -Ql	"${2}" |awk '{print $2}'; echo	;;
+	   -lm|--mdeps)		makedepz						;;
            -lo|--lorphans)	orph							;;
 	   -lv|--lvcs)		dev							;;
           -log|--paclog)	paclog							;;
