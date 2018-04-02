@@ -1,5 +1,5 @@
 ## Aurt, AUR helper (aurutils wrapper-script)
-![aurt](https://user-images.githubusercontent.com/36802396/38219265-a7321b7a-3689-11e8-94ee-38e44332e47e.png)
+
 
 Aurt is an Arch Linux AUR helper, wrapper-script around aurutils.
 
