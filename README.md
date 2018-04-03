@@ -1,5 +1,6 @@
 ## Aurt, AUR helper (aurutils wrapper-script)
-![1](https://user-images.githubusercontent.com/36802396/37560155-a1e0bdb6-29f0-11e8-827a-291d0def2176.png)
+![88](https://user-images.githubusercontent.com/36802396/38223526-3c488eae-36a0-11e8-96db-8bdf152fc05b.png)
+More Screenshots: https://cody-learner.github.io/combined.html
 
 Aurt is an Arch Linux AUR helper, wrapper-script around aurutils.
 
