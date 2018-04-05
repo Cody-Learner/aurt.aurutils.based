@@ -1,5 +1,5 @@
 #!/bin/bash
-# aurt-help 2018-03-30   Depencencies: aurt
+# aurt-help 2018-04-04   Depencencies: aurt
 # date:     year-mo-day
 # shellcheck disable=SC2002,SC2086,SC2154
 
@@ -51,24 +51,24 @@ echo -e ${cyan} ${bold} "
 
 searchprint1 () {
 echo -e ${cyan} ${bold} "
-:: pacsearch ${2}  ${none}
-"
+:: pacsearch ${2}" ${none}
+
 }
 searchprint2 () {
 echo -e ${cyan} ${bold} "
 
-:: aursearch -P ${2}  ${none}
-"
+:: aursearch -P ${2}" ${none}
+
 }
 searchprint3 () {
 echo -e ${cyan} ${bold} "
-:: aursearch -Fv ${2}  ${none}
-"
+:: aursearch -Fv ${2}" ${none}
+
 }
 searchprint4 () {
 echo -e ${cyan} ${bold} "
-:: pacman -Sii ${2}  ${none}
-"
+:: pacman -Sii ${2}" ${none}
+
 }
    #======================================== removeprint =========================================
 
@@ -116,8 +116,11 @@ echo -e ${cyan}${bold}":: Checking for updates ....
 " ${none}
 }
 syncprint3 () {
-echo -e ":: Checking : ${P}
-:: Version  : ${C1} "
+echo -e ${cyan}${bold}":: Update   : ${P}
+:: Version  : ${C1}" ${none}
+}
+syncprint33 () {
+echo -e ":: Checking : ${P}"
 }
 syncprint4 () {
 echo -e ${cyan}${bold}":: Available: ${C2} ................... UPDATE AVAILABLE" ${none}
@@ -149,10 +152,10 @@ echo -e "
 AUR Packages ($N) $(cat /tmp/updates | fmt -1000)"
 }
 vcsupdateprint3 () {
-date -r /tmp/updates | awk '{print ":: Running update list from: " $2, $3, $6, "@", $4}' 
+date -r /tmp/updates | awk '{print ":: Update list created: " $2, $3, $6, "@", $4}'
 }
 vcsupdateprint4 () {
-echo -e ${cyan}${bold}":: Will build and install with aurutils aursync script. ${none}" 
+echo -e ${none}":: Installing update list with aursync." 
 }
    #======================================== dependenciesprint ===================================
 
@@ -220,21 +223,19 @@ echo -e ${cyan} ${bold} "
    #======================================== orphprint ===========================================
 orphprint () {
 echo -e ${cyan} ${bold} "
-:: Orphan packages ${none} ${none} 
-"
+:: Orphan packages" ${none}
 }
    #======================================== devprint ============================================
 devprint () {
 
 echo -e ${cyan} ${bold} "
-:: VCS AUR packages ${none} ${none}
-"
+:: VCS AUR packages" ${none}
 }
    #======================================== bysizeprint =========================================
 bysizeprint () {
 echo -e ${cyan} ${bold} "
-:: Top 30 packages by size ${none}
-"
+:: Top 30 packages by size" ${none}
+
 }
    #======================================== parametererrorprint =================================
 parametererrorprint () {
@@ -343,6 +344,7 @@ while :; do
 	--syncprint1)		syncprint1				;;
 	--syncprint2)		syncprint2				;;
 	--syncprint3)		syncprint3				;;
+	--syncprint33)		syncprint33				;;
 	--syncprint4)		syncprint4				;;
 	--syncprint5)		syncprint5				;;
 	--syncprint6)		syncprint6				;;	

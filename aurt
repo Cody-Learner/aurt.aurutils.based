@@ -1,5 +1,5 @@
 #!/bin/bash
-# aurt 2018-03-30   Depencencies: sudo base-devel cower aurutils mc
+# aurt 2018-04-04   Depencencies: sudo base-devel cower aurutils mc
 # date:year-mo-day
 # shellcheck disable=SC1091,SC2002
 
@@ -62,10 +62,10 @@ search () {
 	aursearch -P "${2}"
 
 	. aurt-info --searchprint3 "${2}"
-	aursearch -Fv "${2}"
+	aursearch -Fv "${2}"; if [[ $? != 0 ]]; then echo "N/A"; fi
 
 	. aurt-info --searchprint4 "${2}"
-	pacman -Sii --color=always "${2}" 2>/dev/null
+	pacman -Sii --color=always "${2}" 2>/dev/null ; if [[ $? != 0 ]]; then echo "N/A"; fi; echo
 }
    #====================================================== REMOVE =======================================================
 
@@ -117,10 +117,14 @@ udreport () {
 
 	. aurt-info --udreportprint2
 }
-   #====================================================== SYNC =========================================================
+   #================================================== SYNC TESTING =====================================================
+   ### parallelize via (grouping and backgrounding commands from lines: 146 to 161), (wait < jobs, 189)
 
 sync () {
 
+#set -x
+	rm /tmp/pid   2>/dev/null
+	rm /tmp/jobs1 2>/dev/null
 	. aurt-info --syncprint1
 
 if 	[[ -e /tmp/updates ]]; then
@@ -137,9 +141,9 @@ do							# Prepare to check installed version -vs- available version
 	builddir="${HOME}"/z-AUR-Aurt.git/"${P}"
 	C1=$(pacman -Q "${P}" | awk '{print $2}')
 
-	. aurt-info --syncprint3
+	. aurt-info --syncprint33
 
-	cd "${builddir}" 2>/dev/null || forcebuild
+{ 	cd "${builddir}" 2>/dev/null || install
 
 	makepkg -so --needed --noconfirm &>/dev/null
 
@@ -151,9 +155,13 @@ fi							# Check if installed version different from available version
 							# If different, add package to update list and message user.
 if	[[ $C1 != "$C2" ]]; then
 
+	. aurt-info --syncprint3
 	. aurt-info --syncprint4
 	echo "${P}" >> /tmp/updates
-fi							# Prepare for git HEAD local -vs- remote backup check
+fi; } &
+
+	echo "$!" >>/tmp/pid
+							# Prepare for git HEAD local -vs- remote backup check
 
 	C3=$(git ls-remote https://aur.archlinux.org/"${P}".git HEAD|awk '{print $1}')
 	C4=$(git -C "${builddir}" rev-parse HEAD)
@@ -168,7 +176,7 @@ if	[[ ${C3} != "${C4}" ]]; then
 	. aurt-info --syncprint5
 	echo "${P}" >> /tmp/updates
 fi
-	echo
+
 done							# If no updates available, create file with message and current date.
 							# Notify user with message.
 if	[[ ! -e /tmp/updates ]]; then
@@ -177,11 +185,59 @@ if	[[ ! -e /tmp/updates ]]; then
 	echo ":: No AUR updates available as of last sync on ${pdate}" >/tmp/noupdates
 	exit
 fi
+	jobs -p >>/tmp/jobs1
+	wait < <(jobs -p)
+
 	md5sum /tmp/updates >/tmp/md5sum 2>/dev/null
 }
-   #==================================================== VCSUPDATE ======================================================
+   #================================================ VCSUPDATE TESTING ==================================================
+   ### Change: Only one files review for all AUR packages at beginning rather than for each package as built.
+
 
 vcsupdate () {
+
+	if	[[ -e /tmp/noupdates ]] && [[ -e /tmp/updates  ]]; then rm /tmp/noupdates ;	fi
+	if	[[ -e /tmp/noupdates ]]; then echo ; cat /tmp/noupdates ; echo ; exit ; 	fi
+	if	[[ ! -e /tmp/updates ]] && [[ ! -e /tmp/md5sum ]]; then
+	. aurt-info --vcsupdateprint1 ; exit;							fi
+
+if	[[ $(cat /tmp/md5sum) = $(md5sum /tmp/updates) ]]; then                 # Integrity check updates file
+	awk '!seen[$0]++' /tmp/updates >/tmp/ud && mv /tmp/ud /tmp/updates      # Prepare update list by removing any duplicate entries
+
+	readarray -t udarray <<< "$(cat /tmp/updates | awk '!seen[$0]++')"	# Set filtered update list in array 
+	udlist="${udarray[@]}"							# Set update list to var for aurt-info
+	N="${#udarray[@]}"							# Set number of updates to var for aurt-info
+										
+	. aurt-info --vcsupdateprint2
+   else
+	. aurt-info --vcsupdateprint5; exit					# If integrity check failure, exit with message
+fi
+	echo -e "${cyan}" "${bold}"
+	. aurt-info --vcsupdateprint3
+	. aurt-info --vcsupdateprint4
+while true									# Message user, get authorization to proceed with update
+	do 	read -r -n 1 -p ":: Proceed with update? [Y/n]
+" -s yn
+	echo -e "${none}"
+	case $yn in
+		y|yes) break	 	;;
+		n|no)  return; exit	;;
+		 *) echo "y-n ?" 	;;
+	esac
+done
+	aursync --force --no-confirm "${udarray[@]}"				# Build ...
+	sudo pacman -S --noconfirm --color=always "${udarray[@]}"		# And install updates
+
+	rm /tmp/updates								# Delete update related files
+	rm /tmp/md5sum
+	rm /tmp/noupdates 2>/dev/null
+
+	: "$N"
+}
+   #==================================================== VCSUPDATE ======================================================
+   #======================================== ###   DISABLED FOR TESTING   ### ===========================================
+
+XXXvcsupdate () {
 
 	if	[[ -e /tmp/noupdates ]] && [[ -e /tmp/updates  ]]; then rm /tmp/noupdates ;	fi
 	if	[[ -e /tmp/noupdates ]]; then echo ; cat /tmp/noupdates ; echo ; exit ; 	fi
@@ -375,12 +431,12 @@ makedepz () {
 
 
 	. aurt-info --makedepz1
-	cower -i --format=%M --listdelim=' ' $(pacman -Qq | aursift 2>/dev/null) | fmt -1 | \
-	awk '!seen[$0]++' | awk -F'<|>|=' '{print $1}' >/tmp/mdz
+	cower -i --format=%M --listdelim=' ' $(pacman -Qq | aursift 2>/dev/null) | \
+	fmt -1 | awk -F'<|>|=' '{print $1}' | awk '!seen[$0]++' | sort >/tmp/mdz
 	cat /tmp/mdz
 
 	. aurt-info --makedepz2
-	pacman -Qq $(cat /tmp/mdz) 2>&1 1>/dev/null | awk -F"'" '{print $2}'; echo
+	pacman -Qq $(cat /tmp/mdz) 2>&1 1>/dev/null | awk -F"'" '{print $2}' | awk '!seen[$0]++' | sort ; echo
 }
    #=================================================== RUN FUNCTIONS ===================================================
 
