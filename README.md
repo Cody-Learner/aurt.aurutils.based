@@ -14,7 +14,7 @@ These scripts have been tested on my system managing around 100 AUR packages. Al
 
 ## April 29 2018 
 Aurt-setup is now provided. Screenshot: https://cody-learner.github.io/setup.html<br>
-This automates setup for running/testing aurt.<br>
+This script automates the setup required for running aurt and aurutils.<br>
 
 To test run aurt:<br>
 1) place all 3 scripts in somwehere in your $PATH.<br>
