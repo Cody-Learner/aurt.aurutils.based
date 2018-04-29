@@ -81,6 +81,9 @@ Reinstall cower and aurutils through aurt as a test and so they are registered i
 The container can be powered off by running poweroff from within the container.<br>
 $ sudo poweroff
 
+I copied my ~/Container contents to /var/lib/machines/ and created a custom tar'd container clone after working a bit with them.<br>
+See man machinectl for more info.
+
 ENJOY!<br>
 
 ##
