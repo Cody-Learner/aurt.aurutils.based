@@ -9,8 +9,8 @@ Aurt-setup is now provided. This automates setup for running/testing aurt.<br>
 To test run aurt:<br>
 1) place all 3 scripts in somwehere in your $PATH.<br>
 2) make the scripts executable, ie: chmod +x <script><br>
-3) run aurt-setup.<br>
-4) run aurt<br>
+3) run aurt-setup as user (will prompt for password via sudo)<br>
+4) run aurt as user<br>
 
 Aurt-setup checks for dependencies, builds and/or installs them if needed, sets up a local aur repo in /var/cache/pacman/aur/, syncs the new aur repo, updates the system.<br>
 ##
