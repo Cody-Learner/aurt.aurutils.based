@@ -1,5 +1,5 @@
 #!/bin/bash
-# aurt 2018-04-18   Depencencies: aurt
+# aurt 2018-04-18   Depencencies: sudo
 # date:year-mo-day
 
 echo " 
