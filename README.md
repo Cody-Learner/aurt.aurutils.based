@@ -175,7 +175,7 @@ Include = /etc/aurt.conf
 
 As soon as aurt and aurt-info become feature stable, I'll begin working on a generic configuration script to set up the basics required for aurutils usage.<br>
 
-EDIT April 29 2018: aurt-setup is now provided. This makes things easier for testing. 
+# EDIT April 29 2018: aurt-setup is now provided. This makes things easier for testing. 
 
 To test run aurt:<br>
 1) place all 3 scripts in somwehere in your $PATH.<br>
