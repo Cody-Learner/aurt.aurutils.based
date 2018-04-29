@@ -1,5 +1,5 @@
 #!/bin/bash
-# aurt 2018-04-18   Depencencies: sudo base-devel cower aurutils mc
+# aurt 2018-04-29   Depencencies: sudo base-devel cower aurutils mc expac pkgfile
 # date:year-mo-day
 # shellcheck disable=SC1091,SC2002
 
@@ -152,8 +152,7 @@ do							# Prepare to check installed version -vs- available version
 							# If different, add package to update list and message user.
 	. aurt-info --syncprint3
 	. aurt-info --syncprint4
-	echo "${P}" >> /tmp/updates
-
+	echo "${P}" >>/tmp/updates
 fi; } &
 
 	echo "$!" >>/tmp/pid
@@ -174,16 +173,15 @@ if	[[ ${C3} != "${C4}" ]]; then
 fi
 
 done							# If no updates available, create file with message and current date.
-							# Notify user with message.
+	jobs -p >>/tmp/jobs				# Notify user with message.
+	wait < <(jobs -p)
+
 if	[[ ! -e /tmp/updates ]]; then
 
 	. aurt-info --syncprint6
 	echo ":: No AUR updates available as of last sync on ${pdate}" >/tmp/noupdates
 	exit
 fi
-	jobs -p >>/tmp/jobs
-	wait < <(jobs -p)
-
 	md5sum /tmp/updates >/tmp/md5sum 2>/dev/null
 }
    #================================================ VCSUPDATE ==========================================================
@@ -344,6 +342,7 @@ packagelist () {
 
 	. aurt-info --packagelistprint3
 	pacman -Sl aur | column -t
+	echo
 }
    #=================================================== MAKEDEPZ ======================================================
 ### SC2046: Quote this to prevent word splitting. [2 places, quoting breaks function]

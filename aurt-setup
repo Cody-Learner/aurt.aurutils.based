@@ -1,0 +1,119 @@
+#!/bin/bash
+# aurt 2018-04-18   Depencencies: aurt
+# date:year-mo-day
+
+echo " 
+ Checking official repo aurt dependencies.
+ Running 'pacman -S --needed mc expac pkgfile sudo base-devel'
+ Note: '--needed'   Will skip all installed packages.
+ Press [enter] to continue.
+
+"
+	sudo pacman -S --needed git mc expac pkgfile sudo base-devel
+	aurpkgz=$(pacman -Qq | awk '/aurutils|cower/'|fmt -100)
+
+if	[[ $aurpkgz != "aurutils cower" ]]; then
+	echo "============================================================"
+	echo "aurutils and or cower not installed. Installing them now"
+	echo "============================================================"
+
+	gpg --recv-key --keyserver hkp://pgp.mit.edu 1EB2638FF56C0C53 2>/dev/null
+	gpg --recv-key --keyserver hkp://pgp.mit.edu 6BC26A17B9B7018A 2>/dev/null
+
+	mkdir /var/tmp/build
+	cd /var/tmp/build || exit
+
+	git clone https://aur.archlinux.org/cower.git
+	git clone https://aur.archlinux.org/aurutils.git
+
+	cd /var/tmp/build/cower || exit
+	makepkg -si --noconfirm
+
+	cd /var/tmp/build/aurutils || exit
+	makepkg -si --noconfirm
+    else
+	echo "
+ Great, aurutils and cower are installed.
+"
+fi
+	echo "
+ Configuring pacman for and creating local aur repo.
+ Need sudo to proceed.
+
+"
+	sudo mkdir /var/cache/pacman/aur
+
+OUTFILE=/etc/aurt.conf
+
+	sudo tee "$OUTFILE" > /dev/null << mkAurtConf
+#
+# /etc/aurt.conf
+#
+
+#
+# [default settings]
+# The following paths are commented out with their default values listed.
+# If you wish to use different paths, uncomment and update the paths.
+# RootDir     = /
+# DBPath      = /var/lib/pacman/
+# CacheDir    = /var/cache/pacman/pkg/
+# LogFile     = /var/log/pacman.log
+# GPGDir      = /etc/pacman.d/gnupg/
+# HookDir     = /etc/pacman.d/hooks/
+# HoldPkg     = pacman glibc
+# XferCommand = /usr/bin/curl -C - -f %u > %o
+# XferCommand = /usr/bin/wget --passive-ftp -c -O %o %u
+# CleanMethod = KeepInstalled
+# UseDelta    = 0.7
+
+# Add custom settings below this line.
+
+[options]
+CacheDir    = /var/cache/pacman/aur
+CleanMethod = KeepInstalled
+
+
+[aur]
+SigLevel = Optional TrustAll
+Server = file:///var/cache/pacman/aur
+
+mkAurtConf
+
+PACMOD=/etc/pacman.conf
+
+	sudo tee -a "$PACMOD" > /dev/null << APPENDpaconf
+
+# Path to aurt.conf
+Include = /etc/aurt.conf
+
+APPENDpaconf
+
+	sudo repo-add /var/cache/pacman/aur/aur.db.tar
+
+	echo "
+ Syncing new aur database. This operation requires updating system to be safe.
+ Please allow update proceed.
+
+"
+DIRZ=/var/cache/pacman/aur
+
+	sudo chown -R "$USER":users "$DIRZ"
+	sudo pacman -Syyu
+	echo
+	echo "=========================================================" 
+	echo 'ls -al /var/cache/pacman/aur:'
+	echo "=========================================================" 
+	ls -al /var/cache/pacman/aur
+
+	echo
+	echo "=========================================================" 
+	echo 'cat /etc/pacman.conf:'
+	echo "=========================================================" 
+	cat /etc/pacman.conf
+
+	echo
+	echo "=========================================================" 
+	echo 'cat /etc/aurt.conf:'
+	echo "=========================================================" 
+	cat /etc/aurt.conf
+	echo

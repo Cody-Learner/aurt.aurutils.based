@@ -56,7 +56,6 @@ echo -e ${cyan} ${bold} "
 }
 searchprint2 () {
 echo -e ${cyan} ${bold} "
-
 :: aursearch -P ${2}" ${none}
 
 }
@@ -120,7 +119,7 @@ echo -e ${cyan}${bold}":: Update   : ${P}
 :: Version  : ${C1}" ${none}
 }
 syncprint33 () {
-echo -e ":: Checking : ${P}"
+echo -e ":: Checking : ${P} ${C1}"
 }
 syncprint4 () {
 echo -e ${cyan}${bold}":: Available: ${C2} ................... UPDATE AVAILABLE" ${none}
