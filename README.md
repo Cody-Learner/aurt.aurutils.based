@@ -76,7 +76,7 @@ $ aurt-setup
 Run aurt for menu:
 $ aurt
 ```
-Reinstall cower and aurutils through aurt as a test and so they are registered in the aur repo.<br>
+Reinstall cower and aurutils through aurt as a test and so they get registered in the local aur repo.<br>
 
 The container can be powered off by running poweroff from within the container.<br>
 $ sudo poweroff
