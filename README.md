@@ -172,6 +172,14 @@ Include = /etc/pacman.d/mirrorlist
 Include = /etc/aurt.conf
 
 ```
+```
+As soon as aurt and aurt-info become feature stable, I'll begin working on a generic configuration script to set up the basics required for aurutils usage.
 
-As soon as aurt and aurt-info become feature stable, I'll begin working on a generic configuration script to set up the basics required for aurutils usage. 
+EDIT April 29 2018: aurt-setup is now provided. This makes things easier for testing. To test run aurt:
+1) place all 3 scripts in somwehere in your $PATH. 
+2) make the scripts executable, ie: chmod +x <script>
+3) run aurt-setup.
+4) run aurt
 
+Aurt-setup checks for dependencies, builds and/or installs them if needed, sets up a local aur repo in /var/cache/pacman/aur/, syncs the new aur repo, updates the system.
+...
