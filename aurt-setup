@@ -4,7 +4,7 @@
 
 echo " 
  Checking official repo aurt dependencies.
- Running 'pacman -S --needed mc expac pkgfile sudo base-devel'
+ Running 'pacman -S --needed git mc expac pkgfile sudo base-devel'
  Note: '--needed'   Will skip all installed packages.
  Press [enter] to continue.
 
