@@ -28,15 +28,15 @@ Aurt-setup checks for dependencies, builds and/or installs them if needed, sets 
 ## Setup an Arch systemd-nspawn container for testing. (takes < 5 min)
 Source: https://wiki.archlinux.org/index.php/Systemd-nspawn
 ```
-Update system, install arch-install-scripts and sudo
+Update system, install arch-install-scripts
 $ sudo pacman -Syu
-$ sudo pacman -S arch-install-scripts sudo
+$ sudo pacman -S arch-install-scripts
 
 Create container dir.
 $ mkdir ~/Container/container1
 
-Install Arch minus kernel, etc in container1
-$ pacstrap -i -c ~/Container/container1 base --ignore linux
+Install Arch base and sudo minus kernel, etc in container1
+$ pacstrap -i -c ~/Container/container1 base sudo --ignore linux
 
 When install is finished, boot into the container:
 # systemd-nspawn -b -D ~/Container/container1
