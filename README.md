@@ -4,7 +4,8 @@ Individual screenshots: https://cody-learner.github.io/
 Combined: https://cody-learner.github.io/combined.html
 
 ## EDIT April 29 2018 
-Aurt-setup is now provided. This automates setup for running/testing aurt.<br>
+Aurt-setup is now provided. Screenshot: https://cody-learner.github.io/setup.html<br>
+This automates setup for running/testing aurt.<br>
 
 To test run aurt:<br>
 1) place all 3 scripts in somwehere in your $PATH.<br>
