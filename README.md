@@ -3,6 +3,15 @@
 Individual screenshots: https://cody-learner.github.io/
 Combined: https://cody-learner.github.io/combined.html
 
+Aurt is an Arch Linux AUR helper, wrapper-script around aurutils.
+
+Aurt is intended to ease the transition into setting up and using aurutils. Aurutils brings AUR helpers to a whole new level with it's feature set and integration with pacman. Along with this comes additional work to setup and use. Aurt is a small (~400 lines), very straight forward, easy to follow, edit, customize, etc wrapper script, around aurutils, pacman, etc that ties all the various scripts into a common cli interfce with pacman like commands + some aurt specific, also has a cli command menu on the base interface.
+
+
+Aurt and aurt-info are currently in alpha phase. The feature set is not yet 100% stable. The aurt script is accompanied by aurt-info script to provide user feedback when using aurt. Place both aurt and aurt-info scripts in $PATH for out of the box operation.
+
+These scripts have been tested on my system managing around 100 AUR packages. All the rough edges I've encountered so far have been worked out at this point.
+
 ## EDIT April 29 2018 
 Aurt-setup is now provided. Screenshot: https://cody-learner.github.io/setup.html<br>
 This automates setup for running/testing aurt.<br>
@@ -14,17 +23,67 @@ To test run aurt:<br>
 4) run aurt as user<br>
 
 Aurt-setup checks for dependencies, builds and/or installs them if needed, sets up a local aur repo in /var/cache/pacman/aur/, syncs the new aur repo, updates the system.<br>
+
+
+## Setup an Arch systemd-nspawn container for testing. (takes < 5 min)
+Source: https://wiki.archlinux.org/index.php/Systemd-nspawn
+```
+Update system and install arch-install-scripts and sudo
+$ sudo pacman -Syu
+$ sudo pacman -S arch-install-scripts sudo
+
+Create container dir.
+$ mkdir ~/Container/container1
+
+Install Arch minus kernel, etc in container1
+$ pacstrap -i -c ~/Container/container1 base --ignore linux
+
+When install is finished, boot into the container:
+# systemd-nspawn -b -D ~/Container/container1
+
+Set root password: 
+# passwd
+
+Setup user cody:
+# useradd -m -g users -G wheel,power,storage -s /bin/bash cody
+
+Set cody password:
+# passwd cody
+
+Setup sudo:
+# EDITOR=nano visudo
+Uncomment the following line and save edit:
+# %wheel ALL=(ALL) ALL
+
+Switch to user cody:
+$ su cody
+
+Git clone the aurt repo:
+$ cd
+$ git clone https://github.com/Cody-Learner/aurt.aurutils.based.git
+$ mkdir bin
+$ cp  -p aurt.aurutils.based/aurt* bin
+
+Make scripts executable:
+$ chmod +x bin/*
+
+Set path to include ~/bin
+$ export PATH=$PATH:$USER/bin
+
+Run aurt-setup:
+$ aurt-setup
+
+Run aurt for menu:
+$ aurt
+```
+Reinstall cower and aurutils through aurt as a test and so they are registered in the aur repo.<br>
+
+The container can be powered off by running poweroff from within the container.<br>
+$ sudo poweroff
+
+ENJOY!<br>
+
 ##
-
-Aurt is an Arch Linux AUR helper, wrapper-script around aurutils.
-
-Aurt is intended to ease the transition into setting up and using aurutils. Aurutils brings AUR helpers to a whole new level with it's feature set and integration with pacman. Along with this comes additional work to setup and use. Aurt is a small (~400 lines), very straight forward, easy to follow, edit, customize, etc wrapper script, around aurutils, pacman, etc that ties all the various scripts into a common cli interfce with pacman like commands + some aurt specific, also has a cli command menu on the base interface.
-
-
-Aurt and aurt-info are currently in alpha phase. The feature set is not yet 100% stable. The aurt script is accompanied by aurt-info script to provide user feedback when using aurt. Place both aurt and aurt-info scripts in $PATH for out of the box operation.
-
-These scripts have been tested on my system managing around 100 AUR packages. All the rough edges I've encountered so far have been worked out at this point.
-
 
 For testing aurt and aurt-info, either set up per specs below or edit the script to your setup.
 
