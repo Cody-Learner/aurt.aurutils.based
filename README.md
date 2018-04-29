@@ -3,6 +3,18 @@
 Individual screenshots: https://cody-learner.github.io/
 Combined: https://cody-learner.github.io/combined.html
 
+## EDIT April 29 2018 
+Aurt-setup is now provided. This automates setup for running/testing aurt.<br>
+
+To test run aurt:<br>
+1) place all 3 scripts in somwehere in your $PATH.<br>
+2) make the scripts executable, ie: chmod +x <script><br>
+3) run aurt-setup.<br>
+4) run aurt<br>
+
+Aurt-setup checks for dependencies, builds and/or installs them if needed, sets up a local aur repo in /var/cache/pacman/aur/, syncs the new aur repo, updates the system.<br>
+##
+
 Aurt is an Arch Linux AUR helper, wrapper-script around aurutils.
 
 Aurt is intended to ease the transition into setting up and using aurutils. Aurutils brings AUR helpers to a whole new level with it's feature set and integration with pacman. Along with this comes additional work to setup and use. Aurt is a small (~400 lines), very straight forward, easy to follow, edit, customize, etc wrapper script, around aurutils, pacman, etc that ties all the various scripts into a common cli interfce with pacman like commands + some aurt specific, also has a cli command menu on the base interface.
@@ -174,15 +186,3 @@ Include = /etc/aurt.conf
 ```
 
 As soon as aurt and aurt-info become feature stable, I'll begin working on a generic configuration script to set up the basics required for aurutils usage.<br>
-
-## EDIT April 29 2018: Aurt-setup is now provided.<br>
-This automates setup for running/testing aurt.<br>
-
-To test run aurt:<br>
-1) place all 3 scripts in somwehere in your $PATH.<br>
-2) make the scripts executable, ie: chmod +x <script><br>
-3) run aurt-setup.<br>
-4) run aurt<br>
-
-Aurt-setup checks for dependencies, builds and/or installs them if needed, sets up a local aur repo in /var/cache/pacman/aur/, syncs the new aur repo, updates the system.<br>
-
