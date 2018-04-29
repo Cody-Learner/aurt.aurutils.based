@@ -13,7 +13,7 @@ Aurt, aurt-info, and aurt-setup are currently in alpha phase. The feature set an
 These scripts have been tested on my system managing around 100 AUR packages. All the rough edges I've encountered so far have been worked out at this point.
 
 ## April 29 2018 
-Aurt-setup is now provided. Screenshot: https://cody-learner.github.io/setup.html<br>
+Aurt-setup is now available. Screenshot: https://cody-learner.github.io/setup.html<br>
 This script automates the setup required for running aurt and aurutils.<br>
 
 To test run aurt:<br>
