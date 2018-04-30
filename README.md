@@ -38,8 +38,9 @@ $ mkdir ~/Container/container1
 Install Arch base and sudo minus kernel, etc in container1
 $ sudo pacstrap -i -c ~/Container/container1 base sudo --ignore linux
 
-When install is finished, boot into the container:
-# systemd-nspawn -b -D ~/Container/container1
+When install is finished, su and boot into the container:
+$ su
+# systemd-nspawn -b -D /home/$USER/Container/container1
 
 Set root password: 
 # passwd
