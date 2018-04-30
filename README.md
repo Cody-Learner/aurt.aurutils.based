@@ -77,6 +77,7 @@ $ export PATH=$PATH:$HOME/bin
 $ aurt-setup
 
 15) Run aurt for menu:
+![88](https://user-images.githubusercontent.com/36802396/38223526-3c488eae-36a0-11e8-96db-8bdf152fc05b.png)
 $ aurt
 ```
 ![88](https://user-images.githubusercontent.com/36802396/38223526-3c488eae-36a0-11e8-96db-8bdf152fc05b.png)
