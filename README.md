@@ -79,7 +79,6 @@ $ aurt-setup
 15) Run aurt for menu:
 $ aurt
 ```
-![88](https://cody-learner.github.io/aurt.html)
 ![88](https://user-images.githubusercontent.com/36802396/38223526-3c488eae-36a0-11e8-96db-8bdf152fc05b.png)
 Reinstall cower and aurutils inside the container with aurt as a test and so they get registered in the local aur repo.<br>
 Hit the [F10] key to escape midnight commander after reading, editing AUR package files.<br>
