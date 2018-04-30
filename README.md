@@ -91,22 +91,9 @@ I copied my ~/Container contents to /var/lib/machines/ and created a custom tar'
 See 'man systemd-nspawn', 'man machinectl' and the Arch wiki link above for more info.
 
 ENJOY!<br>
-
-
-<h2>Example of code</h2>
-
-<pre>
-    <div class="container">
-        <div class="block two first">
-            <h2>Your title</h2>
-            <div class="wrap">
-            //TEST
-            https://cody-learner.github.io/aurt.html
-            </div>
-        </div>
-    </div>
-
-
+<br>
+<br>
+<br>
 
 ## Notes:
 
