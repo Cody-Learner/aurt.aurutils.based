@@ -85,10 +85,14 @@ Hit the [F10] key to escape midnight commander after reading, editing AUR packag
 The container can be powered off by running poweroff from within the container.<br>
 $ sudo poweroff
 
-I copied my ~/Container contents to /var/lib/machines/ and created a custom tar'd container clone after working with systemd .<br>
-See man machinectl for more info.
+I copied my ~/Container contents to /var/lib/machines/ and created a custom tar'd container clone after working with systemd containers a bit.<br>
+
+See 'man systemd-nspawn', 'man machinectl' and the Arch wiki link above for more info.
 
 ENJOY!<br>
+
+
+
 
 ## Notes:
 
