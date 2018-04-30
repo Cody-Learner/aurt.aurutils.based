@@ -92,7 +92,7 @@ See 'man systemd-nspawn', 'man machinectl' and the Arch wiki link above for more
 
 ENJOY!<br>
 
-```html
+
 <h2>Example of code</h2>
 
 <pre>
@@ -105,8 +105,7 @@ ENJOY!<br>
             </div>
         </div>
     </div>
-</pre>
-```
+
 
 
 ## Notes:
