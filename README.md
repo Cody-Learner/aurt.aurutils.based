@@ -36,7 +36,7 @@ Create container dir.
 $ mkdir ~/Container/container1
 
 Install Arch base and sudo minus kernel, etc in container1
-$ pacstrap -i -c ~/Container/container1 base sudo --ignore linux
+$ sudo pacstrap -i -c ~/Container/container1 base sudo --ignore linux
 
 When install is finished, boot into the container:
 # systemd-nspawn -b -D ~/Container/container1
