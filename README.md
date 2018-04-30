@@ -92,7 +92,9 @@ See 'man systemd-nspawn', 'man machinectl' and the Arch wiki link above for more
 
 ENJOY!<br>
 
-<!--https://cody-learner.github.io/aurt.html-->
+{::nomarkdown}
+<!-- https://cody-learner.github.io/aurt.html-->
+{:/}
 
 
 ## Notes:
