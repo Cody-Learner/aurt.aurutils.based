@@ -25,7 +25,7 @@ To test run aurt:<br>
 Aurt-setup checks for dependencies, builds and/or installs them if needed, sets up a local aur repo in /var/cache/pacman/aur/, syncs the new aur repo, updates the system.<br>
 
 
-## Setup an Arch systemd-nspawn container for testing. (takes < 5 min)
+## Setup an Arch systemd-nspawn container for testing aurt. (takes ~ 5 min)
 Source: https://wiki.archlinux.org/index.php/Systemd-nspawn
 ```
 Update system, install arch-install-scripts
@@ -35,12 +35,14 @@ $ sudo pacman -S arch-install-scripts
 Create container dir.
 $ mkdir ~/Container/container1
 
-Install Arch base and sudo minus kernel, etc in container1
-$ sudo pacstrap -i -c ~/Container/container1 base sudo --ignore linux
+Install Arch base, sudo, and git minus kernel, etc in container1
+$ sudo pacstrap -i -c ~/Container/container1 base sudo git --ignore linux
 
 When install is finished, su and boot into the container:
 $ su
 # systemd-nspawn -b -D /home/$USER/Container/container1
+
+Log in as root with no password
 
 Set root password: 
 # passwd
@@ -56,11 +58,11 @@ Setup sudo:
 Uncomment the following line and save edit:
 # %wheel ALL=(ALL) ALL
 
-Switch to user cody:
+Switch to user cody and change to home dir:
 $ su cody
+$ cd
 
 Git clone the aurt repo:
-$ cd
 $ git clone https://github.com/Cody-Learner/aurt.aurutils.based.git
 $ mkdir bin
 $ cp  -p aurt.aurutils.based/aurt* bin
@@ -69,7 +71,7 @@ Make scripts executable:
 $ chmod +x bin/*
 
 Set path to include ~/bin
-$ export PATH=$PATH:$USER/bin
+$ export PATH=$PATH:$HOME/bin
 
 Run aurt-setup:
 $ aurt-setup
@@ -77,12 +79,13 @@ $ aurt-setup
 Run aurt for menu:
 $ aurt
 ```
-Reinstall cower and aurutils through aurt as a test and so they get registered in the local aur repo.<br>
+Reinstall cower and aurutils inside the container with aurt as a test and so they get registered in the local aur repo.<br>
+Hit [F10] key to escape midnight commander after reading, editing AUR package files.<br>
 
 The container can be powered off by running poweroff from within the container.<br>
 $ sudo poweroff
 
-I copied my ~/Container contents to /var/lib/machines/ and created a custom tar'd container clone after working a bit with them.<br>
+I copied my ~/Container contents to /var/lib/machines/ and created a custom tar'd container clone after working with systemd .<br>
 See man machinectl for more info.
 
 ENJOY!<br>
