@@ -1,5 +1,5 @@
 #!/bin/bash
-# aurt-help 2018-05-09   Depencencies: aurt
+# aurt-info 2018-05-09   Depencencies: aurt
 # date:     year-mo-day
 # shellcheck disable=SC2002,SC2086,SC2154
 
