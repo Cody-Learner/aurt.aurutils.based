@@ -9,7 +9,7 @@ echo "
  Press [enter] to continue.
 
 "
-	sudo pacman -S --needed git mc expac pkgfile sudo base-devel
+	sudo pacman -S --needed git mc expac pkgfile sudo repose base-devel
 	aurpkgz=$(pacman -Qq | awk '/aurutils|cower/'|fmt -100)
 
 if	[[ $aurpkgz != "aurutils cower" ]]; then
