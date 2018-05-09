@@ -1,10 +1,10 @@
 #!/bin/bash
-# aurt-setup 2018-04-30   Depencencies: sudo
-# date:year-mo-day
+# aurt-setup 2018-05-09   Depencencies: aurt
+# date:      year-mo-day
 
 echo " 
  Checking official repo aurt dependencies.
- Running 'pacman -S --needed git mc expac pkgfile sudo base-devel'
+ Running 'pacman -S --needed mc expac pkgfile sudo base-devel'
  Note: '--needed'   Will skip all installed packages.
  Press [enter] to continue.
 
@@ -17,8 +17,21 @@ if	[[ $aurpkgz != "aurutils cower" ]]; then
 	echo "aurutils and or cower not installed. Installing them now"
 	echo "============================================================"
 
-	gpg --recv-key --keyserver hkp://pgp.mit.edu 1EB2638FF56C0C53 2>/dev/null
-	gpg --recv-key --keyserver hkp://pgp.mit.edu 6BC26A17B9B7018A 2>/dev/null
+	# Receiving public gpg keys have occasionally been problematic. Try all options!
+
+	gpg --recv-keys 						 1EB2638FF56C0C53 2>/dev/null $
+	gpg --recv-key  --keyserver hkp://pgp.mit.edu 			 1EB2638FF56C0C53 2>/dev/null &
+#	gpg --recv-keys --keyserver hkp://pgp.mit.edu:80 		 1EB2638FF56C0C53 2>/dev/null &
+#	gpg --recv-keys --keyserver hkp://p80.pool.sks-keyservers.net:80 1EB2638FF56C0C53 2>/dev/null &
+#	gpg --recv-keys --keyserver hkps://pgp.mit.edu 			 1EB2638FF56C0C53 2>/dev/null &
+#	gpg --recv-keys --keyserver hkps://hkps.pool.sks-keyservers.net  1EB2638FF56C0C53 2>/dev/null &
+	gpg --recv-keys   DBE7D3DD8C81D58D0A13D0E76BC26A17B9B7018A			  2>/dev/null &
+	gpg --recv-keys 						 6BC26A17B9B7018A 2>/dev/null &
+	gpg --recv-key  --keyserver hkp://pgp.mit.edu 			 6BC26A17B9B7018A 2>/dev/null &
+#	gpg --recv-keys --keyserver hkp://pgp.mit.edu:80 		 6BC26A17B9B7018A 2>/dev/null &
+#	gpg --recv-keys --keyserver hkp://p80.pool.sks-keyservers.net:80 6BC26A17B9B7018A 2>/dev/null &
+#	gpg --recv-keys --keyserver hkps://pgp.mit.edu 			 6BC26A17B9B7018A 2>/dev/null &
+#	gpg --recv-keys --keyserver hkps://hkps.pool.sks-keyservers.net  6BC26A17B9B7018A 2>/dev/null &
 
 	mkdir /var/tmp/build
 	cd /var/tmp/build || exit
