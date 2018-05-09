@@ -1,5 +1,5 @@
 #!/bin/bash
-# aurt 2018-04-29   Depencencies: sudo base-devel cower aurutils mc expac pkgfile
+# aurt 2018-05-09   Depencencies: sudo base-devel cower aurutils mc expac pkgfile
 # date:year-mo-day
 # shellcheck disable=SC1091,SC2002
 
@@ -78,6 +78,8 @@ remove () {
 	repoctl remove "${2}" 2>/dev/null
 	repose -dv /var/cache/pacman/aur/aur "${2}"
 
+	sudo pacsync aur    >>/dev/null  ## NEW ##
+
 	pkg=$(pacman -Qq "${2}" 2>/dev/null)
 
 if 	[[ -z "$pkg" ]]; then
@@ -86,6 +88,27 @@ if 	[[ -z "$pkg" ]]; then
     else
 	. aurt-info --removeprint3 "${2}"
 fi
+}
+   #================================================= MANUALINSTALL ======================================================
+
+manualinstall () {
+
+PKG="$2"
+TEST=$(find -maxdepth 1 | awk -F/ '/pkg.tar/ {print $2}' | grep $2)
+
+if	[[ $PKG = $TEST ]]; then
+	cp "$PKG" /var/cache/pacman/aur
+	echo ":: Copying $2 to local aur repo"
+	else
+	echo ":: Error: "$2" is not present"; exit
+fi
+
+repose -p /var/cache/pacman/aur -r /var/cache/pacman/aur aur
+
+sudo pacsync aur &>/dev/null
+
+sudo pacman -U "$PKG"
+
 }
    #=================================================== UDREPORT ========================================================
 
@@ -396,6 +419,7 @@ while	:; do
 	  -Syu|--udate)		update							;;
 	   -Ss|--search)	search			"${@}" 				;;
 	    -R|--remove)	remove			"${@}"				;;
+	    -U|--maninst)	manualinstall		"${@}"				;;
 	   -Qu|--udr)		udreport						;;
 	   -Vc|--vcscheck)	sync							;;
 	   -Vu|--vcsupdate)	vcsupdate						;;
