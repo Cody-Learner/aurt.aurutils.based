@@ -1,5 +1,5 @@
 #!/bin/bash
-# aurt 2018-05-09   Depencencies: sudo base-devel cower aurutils mc expac pkgfile repose
+# aurt 2018-05-11   Depencencies: sudo base-devel aurutils cower mc expac pkgfile repoctl
 # date:year-mo-day
 # shellcheck disable=SC1091,SC2002
 
@@ -16,6 +16,9 @@ none='\033[00m'
 install () {
 
 	aursync --no-confirm "${pkglist[@]}"
+
+	sudo pacsync aur                                                   ## NEW ##
+
 	sudo pacman -S --noconfirm --color=always "${pkglist[@]}"
 
 	verify=$(pacman -Qq "${pkglist[@]}"|fmt -1000)
@@ -73,11 +76,13 @@ remove () {
 
 	. aurt-info --removeprint1 "${2}"
 
-	rm -fr "${HOME}"/z-AUR-Aurt.git/"${2}"
-	sudo pacman -Rns --color=always "${2}"
-	repose -dv /var/cache/pacman/aur/aur "${2}"
 
-	sudo pacsync aur    >>/dev/null  ## NEW ##
+	rm -fr "${HOME}"/z-AUR-Aurt.git/"${2}"
+
+	repoctl remove "${2}"
+	sudo pacsync aur    >/dev/null
+
+	sudo pacman -Rns --color=always "${2}"
 
 	pkg=$(pacman -Qq "${2}" 2>/dev/null)
 
@@ -89,25 +94,32 @@ if 	[[ -z "$pkg" ]]; then
 fi
 }
    #================================================= MANUALINSTALL ======================================================
-
+			### This must be ran in the directory containing the package, < *.pkg.tar* >  ###
 manualinstall () {
 
 PKG="$2"
 TEST=$(find -maxdepth 1 | awk -F/ '/pkg.tar/ {print $2}' | grep $2)
 
-if	[[ $PKG = $TEST ]]; then
-	cp "$PKG" /var/cache/pacman/aur
-	echo ":: Copying $2 to local aur repo"
-	else
-	echo ":: Error: "$2" is not present"; exit
+if	[[ -n $(find -maxdepth 1 | grep pkg.tar.xz) ]]; then
+
+NAME=$(xzcat "${PKG}" 2>/dev/null | awk '/pkgname/ {print $3}' )
+    elif
+	[[ -n $(find -maxdepth 1 | grep pkg.tar) ]]; then
+
+NAME=$(cat "${PKG}" 2>/dev/null | awk '/pkgname/ {print $3}')
+
 fi
 
-repose -p /var/cache/pacman/aur -r /var/cache/pacman/aur aur
-
-sudo pacsync aur &>/dev/null
-
-sudo pacman -U "$PKG"
-
+if	[[ $PKG = $TEST ]]; then
+	cp "${PKG}" /var/cache/pacman/aur
+	echo ":: Copying $2 to local aur repo"
+    else
+	echo ":: Error: "$2" is not present"; exit
+fi
+	repoctl add "${PKG}"
+	repoctl update
+	sudo pacsync aur &>/dev/null
+	sudo pacman -S "${NAME}"
 }
    #=================================================== UDREPORT ========================================================
 
@@ -354,6 +366,7 @@ fi
 
 packagelist () {
 
+	sudo pacsync aur &>/dev/null
 	readarray -t pkglst <<< "$(pacman -Qq| aursift 2>/dev/null)"
 
 	. aurt-info --packagelistprint1
@@ -401,6 +414,12 @@ bysize () {
 	expac -H M '%m\t%n' | sort -hr | head -n 30 | column -t -R1 ; echo
 #	expac --timefmt='%F %T' '%l %n' | sort -r | head -n 30 | column -t ### by date
 }
+   #===================================================== PGPKEY ========================================================
+
+pgpkey () {
+
+	gpg --recv-key "${2}"
+}
    #=================================================== PARAMERROR ======================================================
 
 parametererror () {
@@ -430,6 +449,7 @@ while	:; do
 	   -lm|--mdeps)		makedepz						;;
            -lo|--lorphans)	orph							;;
 	   -lv|--lvcs)		dev							;;
+	  -pgp|key)             pgpkey			"${@}"				;;
           -log|--paclog)	paclog							;;
 	  -T30|--bysize)	bysize							;;
 	    -h|--help)		. aurt-info --help	"${@}"				;;

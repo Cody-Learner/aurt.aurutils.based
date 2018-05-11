@@ -1,5 +1,5 @@
 #!/bin/bash
-# aurt-info 2018-05-09   Depencencies: aurt
+# aurt-info 2018-05-11   Depencencies: aurt
 # date:     year-mo-day
 # shellcheck disable=SC2002,SC2086,SC2154
 
@@ -20,11 +20,12 @@ cat << Read-Header
  |  -Syu Update All AUR packages          -pi  Package - Installed? Repo? Info?   |
  |  -Ss  Search For AUR Packages          -la  List    - All AUR Package          |
  |  -R   Remove Pkg & Related Data        -lf  List    - Files Provided By Pkg    |
- |  -U   Manual Install Or Update	  -lo  List    - Orphan Packages          |
+ |  -U   Manual Install Or Update         -lo  List    - Orphan Packages          |
  |  -Qu  Update Report                    -lv  List    - VCS Packages             |
  |  -Vc  VCS Update Sync & Report         -lm  List    - All AUR makedeps         |
  |  -Vu  VCS Update                       -log Pacman Log                         |
- |  -T30 Top 30 Largest Packages          -h   Help                               |
+ |  -T30 Top 30 Largest Packages                                                  |
+ |  -h   Help                             -pgp <key#>  - Import pgp key           |
  |================================================================================|
 Read-Header
 echo -e "${none}"
@@ -267,7 +268,7 @@ cat << Read-Help
  -Syu : Update all AUR packages via aurweb RPC.
  -Ss  : Search for package using various listed methods.
  -R   : Remove package and info.
- -U   : Manual install or update
+ -U   : Manual install or update.
  -Qu  : Query via aurweb RPC update status and print results.
  -Vc  : VCS - Check via makepkg, for updates, print and generate file.
  -Vu  : VCS - Update AUR packages based on file generated from -Vc.
@@ -275,6 +276,7 @@ cat << Read-Help
  -pf  : Package files list.
  -pi  : Package information.
  -log : Pacman.log.
+ -pgp : Import pgp key.
  -h   : help, this page.
 
 
@@ -284,13 +286,15 @@ cat << Read-Help
  -Syu Update all AUR packages via aursync -u.
  -Ss  Search for package via pacsearch, aursearch -P, aursearch -Fv, pacman -Sii
  -R   Performs pacman -Rns on package and deletes related files, dir's in ~/z-AUR-Aurt.git/.
- -U   Similar to 'pacman -U <official repo pkg>-version.number-pkg.tar.gz'. Registers package in aur database.
+ -U   Similar to "pacman -U official-repo-pkg-version.number-pkg.tar.gz". Registers pkg in aur database and installs with "pacman -S".
+ -U   Must be ran in directory containing *.pkg.tar* and .SRCINFO
  -Qu  Display list of AUR package update status via aurcheck -ad aur.
  -Vc  Generate AUR packages update report and list via makepkg -so and makepkg --printsrcinfo.
  -Vu  Update based on list generated from last running of aurt -Vc.
  -pd  Display details on package dependencies installed or not via aurchain, aurchain -a, and pacman -T.
  -pf  Display list of files belonging to package.
  -log Display pacman log file.
+ -pgp Import pgp key.         Example:  aurt -pgp 1234567890ABCDE
  -h   Display this help page.
 
 
