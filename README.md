@@ -47,19 +47,19 @@ $ su
 6) Set root password: 
 # passwd
 
-7) Setup user cody:
-# useradd -m -g users -G wheel,power,storage -s /bin/bash cody
+7) Setup user aurt:
+# useradd -m -g users -G wheel,power,storage -s /bin/bash aurt
 
-8) Set cody password:
-# passwd cody
+8) Set aurt password:
+# passwd aurt
 
 9) Setup sudo:
 # EDITOR=nano visudo
 Uncomment the following line and save edit:
 # %wheel ALL=(ALL) ALL
 
-10) Switch to user cody and change to home dir:
-$ su cody
+10) Switch to user aurt and change to home dir:
+$ su aurt
 $ cd
 
 11) Git clone the aurt repo:
@@ -119,7 +119,7 @@ I have the following set in the aurt script to change the default settings in au
 
 ```
 export PAGER=mc
-export AURDEST=/home/cody/z-AUR-Aurt.git/
+export AURDEST=/home/aurt/z-AUR-Aurt.git/
 ```
 
 

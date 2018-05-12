@@ -1,0 +1,158 @@
+#!/bin/bash
+# aurt-setup-img 2018-05-11   Depencencies: aurt sudo
+# date:year-mo-day
+
+echo " 
+ Syncing local pacman databases, updating system and installing missing base packages.
+ Linux kernel and dependencies are not needed in container. Answer no when prompted.
+ Checking for official repo aurt dependencies.
+ Running pacman --needed. Installed up to date pkgs will not be reinstalled.
+
+"	sudo pacman -Syyu --noconfirm
+	sudo pacman -S --needed base-devel diffutils gawk gettext groff gzip inetutils iproute2 iputils jfsutils less libaio \
+			libpipeline licenses logrotate lvm2 man-db man-pages mdadm mpfr netctl openresolv pciutils pcmciautils \
+			procps-ng psmisc reiserfsprogs s-nail sed sysfsutils tar texinfo thin-provisioning-tools usbutils vi \
+			which xfsprogs ldns libedit openssh wget pkgfile git mc --noconfirm
+
+	aurpkgz=$(pacman -Qq | awk '/aurutils|cower/'|fmt -100)
+
+if	[[ $aurpkgz != "aurutils cower repoctl" ]]; then
+
+echo "
+ Installing aurutils, cower, repoctl........
+ This may take some time....................
+"
+
+	mkdir /var/tmp/build
+	cd /var/tmp/build || exit
+
+	git clone https://aur.archlinux.org/cower.git
+	git clone https://aur.archlinux.org/aurutils.git
+	git clone https://aur.archlinux.org/repoctl
+
+	cd /var/tmp/build/cower || exit
+	makepkg -si --noconfirm
+
+	cd /var/tmp/build/aurutils || exit
+	makepkg -si --noconfirm
+
+	cd /var/tmp/build/repoctl || exit
+	makepkg -si --noconfirm
+    else
+
+echo "
+ Great, aurutils and cower are installed.
+"
+
+fi
+
+echo "
+ Configuring pacman for and creating local aur repo.
+ Need sudo to proceed.
+
+"
+
+OUTFILE=/etc/aurt.conf
+
+#===============================================================================#
+	sudo tee "$OUTFILE" > /dev/null << mkAurtConf
+#										# 
+# /etc/aurt.conf								#
+#										#
+#										#
+# [default settings]								#
+# The following paths are commented out with their default values listed.	#
+# If you wish to use different paths, uncomment and update the paths.		#
+# RootDir     = /								#
+# DBPath      = /var/lib/pacman/						#
+# CacheDir    = /var/cache/pacman/pkg/						#
+# LogFile     = /var/log/pacman.log						#
+# GPGDir      = /etc/pacman.d/gnupg/						#
+# HookDir     = /etc/pacman.d/hooks/						#
+# HoldPkg     = pacman glibc							#
+# XferCommand = /usr/bin/curl -C - -f %u > %o					#
+# XferCommand = /usr/bin/wget --passive-ftp -c -O %o %u				#
+# CleanMethod = KeepInstalled							#
+# UseDelta    = 0.7								#
+										#
+# Add custom settings below this line.						#
+										#
+[options]
+CacheDir    = /var/cache/pacman/aur
+CleanMethod = KeepInstalled
+										#
+										#
+[aur]
+SigLevel = Optional TrustAll
+Server = file:///var/cache/pacman/aur
+
+mkAurtConf
+#===============================================================================#
+
+
+
+	PACMOD=/etc/pacman.conf
+
+#================================================================#
+sudo tee -a "$PACMOD" > /dev/null << APPENDpaconf
+                                                                 #
+# Path to aurt.conf
+Include = /etc/aurt.conf
+                                                                 #
+APPENDpaconf
+#================================================================#
+
+
+	echo 'next: sudo mkdir /var/cache/pacman/aur/' ; sleep 1
+	sudo mkdir /var/cache/pacman/aur/
+
+	echo 'next: cd /var/cache/pacman/aur/' ; sleep 1
+	cd /var/cache/pacman/aur/
+
+	echo 'next: repo-add aur.db.tar' ; sleep 1
+	sudo repo-add aur.db.tar
+
+	echo 'next: repoctl new config /var/cache/pacman/aur/aur.db.tar' ; sleep 1
+	repoctl new config /var/cache/pacman/aur/aur.db.tar
+
+echo "
+ Syncing new aur database. This operation requires updating system to be safe.
+ Please allow update proceed.
+
+"
+
+	DIRZ=/var/cache/pacman/aur
+
+	sudo chown -R "$USER":users "$DIRZ"
+
+	sudo pacman -Syyu
+
+	cd /var/tmp; echo
+
+	git clone https://github.com/Cody-Learner/aurt.aurutils.based.git
+
+	cp  -p /var/tmp/aurt.aurutils.based/aurt* $HOME/bin 2>/dev/null
+
+	sudo mv /etc/makepkg.conf   /etc/makepkg.conf.bu
+	sudo cp /zfile/makepkg.conf /etc/makepkg.conf
+
+echo "
+========================================================================
+
+ Aurt setup has finished!
+
+ For a menu ............................. Run:   aurt
+ To "list all" installed AUR packages ..... Run:   aurt -la
+ To reinstall aurutils and cower *....... Run:   aurt -S aurutils cower
+
+ * This will install the packages with aurt so that they get 
+   properly registered and show up in the local aur repo database.
+
+ Note: Ignore the warning: 
+  ==> WARNING: No packages remain, creating empty database.
+
+ Translation: Install some AUR packages so it's not empty.
+ 
+========================================================================
+"
+
