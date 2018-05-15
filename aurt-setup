@@ -1,5 +1,5 @@
 #!/bin/bash
-# aurt-setup 2018-05-09   Depencencies: aurt sudo
+# aurt-setup 2018-05-15   Depencencies: aurt sudo
 # date:year-mo-day
 
 #................... aurt official repo Depencencies: sudo base-devel mc expac pkgfile
