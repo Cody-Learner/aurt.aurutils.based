@@ -5,6 +5,8 @@
 
 bold='\033[1m'
 cyan='\033[0;96m'
+red='\033[0;91m'
+yellow="\033[0;93m"
 none='\033[00m'
 
 eko=$(echo -e)
@@ -134,6 +136,16 @@ echo -e ${cyan}${bold}":: Checking : ${P} .................... UPDATE AVAILABLE 
 syncprint6 () {
 echo -e "
 :: All AUR packages up to date.
+"
+}
+syncprint7 () {
+echo -e ${red}${bold}"
+:: Official updates available.
+:: This operation WILL NOT RUN if system is not up to date. ${none}
+"
+}
+syncprint8 () {
+echo -e ${cyan}${bold}":: Excluding locally installed package/s from update check:${yellow}${bold} $(cat /tmp/LocPkgs | fmt -1000) ${none}
 "
 }
    #======================================== vcsupdateprint ======================================
@@ -353,7 +365,9 @@ while :; do
 	--syncprint33)		syncprint33				;;
 	--syncprint4)		syncprint4				;;
 	--syncprint5)		syncprint5				;;
-	--syncprint6)		syncprint6				;;	
+	--syncprint6)		syncprint6				;;
+	--syncprint7)		syncprint7				;;
+	--syncprint8)		syncprint8				;;	
 	--vcsupdateprint1)	vcsupdateprint1				;;
 	--vcsupdateprint2)	vcsupdateprint2				;;
 	--vcsupdateprint3)	vcsupdateprint3				;;
