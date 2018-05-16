@@ -14,7 +14,9 @@ These scripts have been tested on my system managing around 100 AUR packages. Al
 
 ## May 15 2018
 To simplify testing without risk or cluttering up your system, I've got the container image working pretty well at this point.<br>
-Just git clone the repo: https://github.com/Cody-Learner/Arch-Image.git  If your Arch install is using systemd, follow the online guide: https://github.com/Cody-Learner/Arch-Image , start the container image and run two onboard scripts following the provided instructions. These scripts are necessary to keep the image compact enough to distribute here. My thinking is if you give aurt a try, soon after you'll be setting it up on your system use!
+Just git clone the repo: https://github.com/Cody-Learner/Arch-Image.git  If your Arch install is using systemd, follow the online guide: https://github.com/Cody-Learner/Arch-Image , start the container image and run two onboard scripts following the provided instructions. These scripts are necessary to keep the image compact enough to distribute here. My thinking is if you give aurt a try in a container, you'll be setting it up on your system to use after the test run! This helper script is likely targeted more towards the less experienced Arch users who see aurutils as intimidating or too difficult, but who knows... I know of at least one fairly major player in the Arch ecosystem using Yaourt. With that said, would be nice to get some more experienced shell scripters than mine,  input on sanitizing and cleaning this script up to elegance*.
+
+*honestly still trying to figure out exactly what that is!
 
 ## April 29 2018 
 Aurt-setup is now available. Screenshot: https://cody-learner.github.io/setup.html<br>
