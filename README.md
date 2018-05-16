@@ -24,7 +24,7 @@ Aurt-setup is now available. Screenshot: https://cody-learner.github.io/setup.ht
 This script automates the setup required for running aurt and aurutils.<br>
 
 To test run aurt:<br>
-1) place all 3 scripts in somwehere in your $PATH.<br>
+1) place all 3 scripts in somewhere in your $PATH.<br>
 2) make the scripts executable, ie: chmod +x <script><br>
 3) run aurt-setup as user (will prompt for password via sudo)<br>
 4) run aurt as user<br>
