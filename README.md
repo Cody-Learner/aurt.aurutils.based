@@ -12,6 +12,11 @@ Aurt, aurt-info, and aurt-setup are currently in alpha phase. The feature set an
 
 These scripts have been tested on my system managing around 100 AUR packages. All the rough edges I've encountered so far have been worked out at this point.
 
+## May 15 2018
+To simplify testing without risk or cluttering up your system, I've got the container image working pretty well at this point.<br>
+Just git clone the repo: https://github.com/Cody-Learner/Arch-Image.git <br>
+If your Arch install is using systemd, follow the online guide: https://github.com/Cody-Learner/Arch-Image , <br> start the container image and run two onboard scripts following the provided instructions. These scripts are necessary to keep the image compact enough to distribute here. My thinking is if you give aurt a try, soon after you'll be setting it up on your system use!
+
 ## April 29 2018 
 Aurt-setup is now available. Screenshot: https://cody-learner.github.io/setup.html<br>
 This script automates the setup required for running aurt and aurutils.<br>
