@@ -1,5 +1,5 @@
 #!/bin/bash
-# aurt 2018-05-11   Depencencies: sudo base-devel mc expac pkgfile aurutils cower repoctl
+# aurt 2018-05-15   Depencencies: sudo base-devel mc expac pkgfile aurutils cower repoctl
 # date:year-mo-day
 # shellcheck disable=SC1091,SC2002
 
@@ -186,7 +186,7 @@ fi
 
 	. aurt-info --syncprint2
 
- ### NEW start ================================================================================
+ ### NEW start
 
 	pacman -Qmq|sort >/tmp/LocPkgs
 
@@ -200,7 +200,7 @@ dlist=$(comm -23 /tmp/dlist /tmp/LocPkgs)
 dlist=$(pacman -Qq|aursift 2>/dev/null)
 
 fi
- ### NEW end ==================================================================================
+ ### NEW end
 
 for P in $dlist
 do							# Prepare to check installed version -vs- available version
