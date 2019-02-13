@@ -3,6 +3,7 @@
 # date:year-mo-day
 # shellcheck disable=SC1091,SC2002
 
+
 export PAGER=mc
 export AURDEST="${HOME}"/z-AUR-Aurt.git/
 pdate=$(date '+%Y-%m-%d')

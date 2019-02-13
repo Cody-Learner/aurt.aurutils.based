@@ -3,6 +3,7 @@
 # date:     year-mo-day
 # shellcheck disable=SC2002,SC2086,SC2154
 
+
 bold='\033[1m'
 cyan='\033[0;96m'
 red='\033[0;91m'
