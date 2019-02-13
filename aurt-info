@@ -1,5 +1,5 @@
 #!/bin/bash
-# aurt-info 2018-05-11   Depencencies: aurt
+# aurt-info 2019-02-13   Depencencies: aurt
 # date:     year-mo-day
 # shellcheck disable=SC2002,SC2086,SC2154
 
@@ -26,8 +26,8 @@ cat << Read-Header
  |  -Qu  Update Report                    -lv  List    - VCS Packages             |
  |  -Vc  VCS Update Sync & Report         -lm  List    - All AUR makedeps         |
  |  -Vu  VCS Update                       -log Pacman Log                         |
- |  -T30 Top 30 Largest Packages                                                  |
- |  -h   Help                             -pgp <key#>  - Import pgp key           |
+ |  -T30 Top 30 Largest Packages          -pgp <key#>  - Import pgp key           |
+ |  -h   Help                             To downgrade, use [ downgrade ] script  |
  |================================================================================|
 Read-Header
 echo -e "${none}"
@@ -284,7 +284,7 @@ cat << Read-Help
  -Qu  : Query via aurweb RPC update status and print results.
  -Vc  : VCS - Check via makepkg, for updates, print and generate file.
  -Vu  : VCS - Update AUR packages based on file generated from -Vc.
- -pd  : Package dependency details.
+ -pd  : Package dependency details for AUR packages.
  -pf  : Package files list.
  -pi  : Package information.
  -log : Pacman.log.
@@ -303,7 +303,7 @@ cat << Read-Help
  -Qu  Display list of AUR package update status via aurcheck -ad aur.
  -Vc  Generate AUR packages update report and list via makepkg -so and makepkg --printsrcinfo.
  -Vu  Update based on list generated from last running of aurt -Vc.
- -pd  Display details on package dependencies installed or not via aurchain, aurchain -a, and pacman -T.
+ -pd  Display details on AUR package dependencies installed or not via aurchain, aurchain -a, and pacman -T.
  -pf  Display list of files belonging to package.
  -log Display pacman log file.
  -pgp Import pgp key.         Example:  aurt -pgp 1234567890ABCDE

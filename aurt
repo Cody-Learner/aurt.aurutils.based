@@ -1,5 +1,5 @@
 #!/bin/bash
-# aurt 2018-05-15   Depencencies: sudo base-devel mc expac pkgfile aurutils cower repoctl
+# aurt 2019-02-13   Depencencies: sudo base-devel mc expac pkgfile aurutils 1.5 cower repoctl
 # date:year-mo-day
 # shellcheck disable=SC1091,SC2002
 
@@ -238,6 +238,7 @@ if	[[ ${C3} != "${C4}" ]]; then
 
 	. aurt-info --syncprint5
 	echo "${P}" >> /tmp/updates
+
 fi
 
 done							# If no updates available, create file with message and current date.
@@ -348,8 +349,11 @@ pkginfo () {
 			done
 		}
    # ---------------------------------------------------------------------------------------# IS THE PACKAGE AVAILABLE ?
+   
+### pacman -Ssq ^"${2}"$ &>/dev/null  exit codes 0 . Should exit code 1 on 'xorg' which is not a package.
+### Pacman regex broken or me?  Switched to: expac %n -S "${2}" >/dev/null on Nov 25, 2018
 
-	pacman -Ssq ^"${2}"$ &>/dev/null || cower -i "${2}" &>/dev/null || pacman -Qi "${2}" &>/dev/null || { 
+	expac %n -S "${2}" >/dev/null || cower -i "${2}" &>/dev/null || pacman -Qi "${2}" &>/dev/null || { 
 	. aurt-info --pkginfoprint1 "${2}"
 	exit; }
    # --------------------------------------------------------------------------------------# IT IS INSTALLED, WANT INFO ?
@@ -463,38 +467,39 @@ parametererror () {
 }
    #=================================================== RUN FUNCTIONS ===================================================
 
-if 	[[ -z "$*" ]]; then aurt-info --header; fi
+if 	[[ -z "$*" ]]; then aurt-info --header; exit; fi
 
 while	:; do
 	case "${1}" in
-	    -S|--install)	install			"${@}"				;;
-	   -Sf|--force)		forceinstall		"${@}"				;;
-	  -Syu|--udate)		update							;;
-	   -Ss|--search)	search			"${@}" 				;;
-	    -R|--remove)	remove			"${@}"				;;
-	    -U|--maninst)	manualinstall		"${@}"				;;
-	   -Qu|--udr)		udreport						;;
-	   -Vc|--vcscheck)	sync							;;
-	   -Vu|--vcsupdate)	vcsupdate						;;
-	   -pd|--pdepends)	dependencies		"${@}"				;;
-	   -pf|--pfiles)	pkgfile 		"${2}"				;;
-	   -pi|--pinfo)		pkginfo			"${@}"				;;
-	   -la|--plist)		packagelist		"${@}"				;;
-           -lf|--lfiles)	echo ; pacman -Ql	"${2}" |awk '{print $2}'; echo	;;
-	   -lm|--mdeps)		makedepz						;;
-           -lo|--lorphans)	orph							;;
-	   -lv|--lvcs)		dev							;;
-	  -pgp|key)             pgpkey			"${@}"				;;
-          -log|--paclog)	paclog							;;
-	  -T30|--bysize)	bysize							;;
-	    -h|--help)		. aurt-info --help	"${@}"				;;
-	   -?*)			parametererror;		aurt-info --header		;;
-	     *)	break
+	 -S|--install)		install			"${@}"						;;
+	-Sf|--force)		forceinstall		"${@}"						;;
+       -Syu|--udate)		update									;;
+	-Ss|--search)		search			"${@}" 						;;
+	 -R|--remove)		remove			"${@}"						;;
+	 -U|--maninst)		manualinstall		"${@}"						;;
+	-Qu|--udr)		udreport								;;
+	-Vc|--vcscheck)		sync									;;
+	-Vu|--vcsupdate)	vcsupdate								;;
+	-pd|--pdepends)		dependencies		"${@}"						;;
+	-pf|--pfiles)		pkgfile			"${2}"						;;
+	-pi|--pinfo)		pkginfo			"${@}"						;;
+	-la|--plist)		packagelist		"${@}"						;;
+	-lf|--lfiles)		echo ; pacman -Ql	"${2}" |awk '{print $2}'; echo			;;
+	-lm|--mdeps)		makedepz								;;
+	-lo|--lorphans)		orph									;;
+	-lv|--lvcs)			dev								;;
+       -pgp|key)         	pgpkey			"${@}"						;;
+       -log|--paclog)		paclog									;;
+       -T30|--bysize)		bysize									;;
+	 -h|--help)		. aurt-info --help	"${@}"						;;
+	-?*)			parametererror;		aurt-info --header				;;
+	  *)	break
 	esac
     shift
 done
 
 unset PAGER
-unset AURDEST	
+unset AURDEST
+	
 		### Do nothing command below to satisfy shellcheck SC2034. These vars are used in aurt-info
-	if [[ "$uaurp"||"$uoffp"||"$aurdp"||"$muallp"||"$audN"||"$nwrN"||"$equN"||"$udlist" != 0 ]]; then exit; fi 
+	if [[ "$uaurp"||"$uoffp"||"$aurdp"||"$muallp"||"$audN"||"$nwrN"||"$equN"||"$udlist" != 0 ]]; then : ; fi 
