@@ -4,6 +4,8 @@ This script ONLY works with aurutils version 1.5. It will not work with the curr
 For now, I'm staying on aurutils 1.5. until something else cause breakage of aurt. <br>
 It's unlikely I'll rewrite aurt for aurutils 2.0 until it becomes unusable using aurutils 1.5.
 
+<br>
+<br>
 
 ## Aurt, AUR helper (aurutils wrapper-script)
 ![88](https://user-images.githubusercontent.com/36802396/38223526-3c488eae-36a0-11e8-96db-8bdf152fc05b.png)
