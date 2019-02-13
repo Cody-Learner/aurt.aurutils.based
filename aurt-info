@@ -3,7 +3,6 @@
 # date:     year-mo-day
 # shellcheck disable=SC2002,SC2086,SC2154
 
-
 bold='\033[1m'
 cyan='\033[0;96m'
 red='\033[0;91m'
@@ -286,11 +285,16 @@ cat << Read-Help
  -Vc  : VCS - Check via makepkg, for updates, print and generate file.
  -Vu  : VCS - Update AUR packages based on file generated from -Vc.
  -pd  : Package dependency details for AUR packages.
- -pf  : Package files list.
+ -pf  : What package owns a file?
  -pi  : Package information.
+ -la  : List all AUR packages installed by aurt.
+ -lf  : List all files provided by a package.
+ -lo  : List all orphan packages.
+ -lv  : List all AUR VCS packages.
+ -lm  : List all AUR package makedeps status.
  -log : Pacman.log.
  -pgp : Import pgp key.
- -h   : help, this page.
+ -h   : help
 
 
   Overview:
@@ -301,13 +305,18 @@ cat << Read-Help
  -R   Performs pacman -Rns on package and deletes related files, dir's in ~/z-AUR-Aurt.git/.
  -U   Similar to "pacman -U official-repo-pkg-version.number-pkg.tar.gz". Registers pkg in aur database and installs with "pacman -S".
  -U   Must be ran in directory containing *.pkg.tar* and .SRCINFO
- -Qu  Display list of AUR package update status via aurcheck -ad aur.
+ -Qu  Displays list of AUR package update status via aurcheck -ad aur.
  -Vc  Generate AUR packages update report and list via makepkg -so and makepkg --printsrcinfo.
  -Vu  Update based on list generated from last running of aurt -Vc.
- -pd  Display details on AUR package dependencies installed or not via aurchain, aurchain -a, and pacman -T.
- -pf  Display list of files belonging to package.
+ -pd  Displays details on AUR package dependencies installed or not via aurchain, aurchain -a, and pacman -T.
+ -pf  Uses pkgfile. aurt -pf <without_path/file> Example: aurt -pf gawk
+ -la  Lists all AUR packages installed with aurt. Note: Does not list manually installed foreign AUR packages. ie pacman -Qqm
+ -lf  Lists all files provided by a package. Uses pacman -Ql. Example: aurt -lf gawk
+ -lo  Lists all orphan packages. Uses pacman -Qtdq
+ -lv  Filters pacman -Qq list for a dev system suffix. 
+ -lm  List all aurt installed AUR package makedeps and if they are installed or not. Note: Not 100% due to various depends specifications.
  -log Display pacman log file.
- -pgp Import pgp key.         Example:  aurt -pgp 1234567890ABCDE
+ -pgp Import pgp <key>. Example:  aurt -pgp 1234567890ABCDE
  -h   Display this help page.
 
 
