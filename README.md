@@ -8,7 +8,6 @@ It's unlikely I'll rewrite aurt for aurutils 2.0 until it becomes unusable using
 <br>
 
 ## Aurt, AUR helper (aurutils wrapper-script)
-![88](https://user-images.githubusercontent.com/36802396/38223526-3c488eae-36a0-11e8-96db-8bdf152fc05b.png)
 ![aurt-ss1](https://user-images.githubusercontent.com/36802396/52738932-9f851b80-2f84-11e9-9247-d55733d6e87b.png)
 Individual screenshots: https://cody-learner.github.io/
 Combined: https://cody-learner.github.io/combined.html
