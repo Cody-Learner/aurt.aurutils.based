@@ -3,7 +3,6 @@
 # date:year-mo-day
 # shellcheck disable=SC1091,SC2002
 
-
 export PAGER=mc
 export AURDEST="${HOME}"/z-AUR-Aurt.git/
 pdate=$(date '+%Y-%m-%d')
@@ -39,7 +38,7 @@ fi
 forceinstall () {
 
 	aursync --force --no-confirm "${pkglist[@]}"
-	sudo pacman -S --force --noconfirm --color=always "${pkglist[@]}"
+	sudo pacman -S --overwrite --noconfirm --color=always "${pkglist[@]}"
 
 	verify=$(pacman -Qq "${pkglist[@]}"|fmt -1000)
 
