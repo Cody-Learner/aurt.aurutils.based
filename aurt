@@ -1,7 +1,12 @@
 #!/bin/bash
-# aurt 2019-04-17   Depencencies: sudo base-devel mc expac pkgfile aurutils1.5 auracle repoctl
+# aurt 2019-10-30   Depencencies: sudo base-devel mc expac pkgfile aurutils1.5 auracle repoctl
 # date:year-mo-day
 # shellcheck disable=SC1091,SC2002,SC2034
+
+# http://redsymbol.net/articles/unofficial-bash-strict-mode/
+# set -euo pipefail
+# IFS=$'\n\t'
+
 
 export PAGER=mc
 export AURDEST="${HOME}"/z-AUR-Aurt.git/
@@ -78,8 +83,13 @@ remove () {
 
 	rm -fr "${HOME}"/z-AUR-Aurt.git/"${2}"
 
-	repoctl remove "${2}"
-	sudo pacsync aur    >/dev/null
+	# repoctl remove "${2}"
+	# Aug 13, 2019 repoctl has failed to remove 2 files from aur database. "error: target not found: github-desktop-bin"
+	# switched to repo-remove
+
+	repo-remove  /var/cache/pacman/aur/aur.db.tar "${2}"
+
+	sudo pacsync aur    #>/dev/null
 
 	sudo pacman -Rns --color=always "${2}"
 
@@ -160,7 +170,8 @@ if	[[ -n $(checkupdates) ]]; then
 	exit
 fi
 	
-	rm /tmp/pid   2>/dev/null
+#	rm /tmp/pid   2>/dev/null			# For testing
+
 	rm /tmp/jobs1 2>/dev/null
 	. aurt-info --syncprint1
 
@@ -169,7 +180,9 @@ if 	[[ -e /tmp/updates ]]; then
 fi
 							# Create list AUR packages to check.
 
-	  pacman -Qq|aursift 2>/dev/null | sort >/tmp/dlist
+							# pacman -Qq|aursift 2>/dev/null sort >/tmp/dlist  # Added:   | grep -v 'virtual dep'
+
+	  pacman -Qq | aursift 2>/dev/null | grep -v 'virtual dep' | sort >/tmp/dlist
 
 	. aurt-info --syncprint2
 
@@ -181,14 +194,15 @@ if	[[ -n $(cat /tmp/LocPkgs) ]]; then
 dlist=$(comm -23 /tmp/dlist /tmp/LocPkgs)
 
     else
+							# dlist=$(pacman -Qq|aursift 2>/dev/null) # Added:   | grep -v 'virtual dep'
 
-dlist=$(pacman -Qq|aursift 2>/dev/null)
+dlist=$(pacman -Qq | aursift 2>/dev/null | grep -v 'virtual dep')
 
 fi
 
 for P in $dlist
 do							# Prepare to check installed version -vs- available version
-							# Avl vers via 'makepkg -so' parse ver from 'makepkg --printsrcinfo'
+							# Available version via 'makepkg -so' parse version from 'makepkg --printsrcinfo'
 	builddir="${HOME}"/z-AUR-Aurt.git/"${P}"
 	C1=$(pacman -Q "${P}" | awk '{print $2}')
 
@@ -198,7 +212,7 @@ do							# Prepare to check installed version -vs- available version
 
 	makepkg -o --needed --noconfirm &>/dev/null
 
-	C2=$(makepkg --printsrcinfo | /bin/sed -n '/pkgver/{s/.*= //;x}; /pkgrel/{s/.*= /-/;H}; /epoch/{s/.*= //;s/$/:/;x;H}; ${x;s/\n//g;p}')
+	C2=$(makepkg --printsrcinfo 2>/dev/null|/bin/sed -n '/pkgver/{s/.*= //;x}; /pkgrel/{s/.*= /-/;H}; /epoch/{s/.*= //;s/$/:/;x;H}; ${x;s/\n//g;p}')
 
 	if	[[ $C1 != "$C2" ]]; then		# Check if installed version different from available version
 							# If different, add package to update list and message user.
@@ -207,7 +221,7 @@ do							# Prepare to check installed version -vs- available version
 	echo "${P}" >>/tmp/updates
 fi; } &
 
-	echo "$!" >>/tmp/pid
+#	echo "$!" >>/tmp/pid				# For testing
 							# Prepare for git HEAD local -vs- remote backup check
 
 	C3=$(git ls-remote https://aur.archlinux.org/"${P}".git HEAD|awk '{print $1}')
@@ -337,7 +351,11 @@ pkginfo () {
 	expac %n -S "${2}" >/dev/null || aursearch -F "${2}" &>/dev/null || { . aurt-info --pkginfoprint1 "${2}"; exit ; }
 
    # --------------------------------------------------------------------------------------# IT IS INSTALLED, WANT INFO ?
-if	[[ $(pacman -Qq "${2}" 2>/dev/null | aursift 2>/dev/null) = "${2}" ]]; then
+
+				# if [[ $(pacman -Qq "${2}" 2>/dev/null | aursift 2>/dev/null) = "${2}" ]]; then 
+				# Added: | grep -v 'virtual dep' | grep -v 'No matches'
+
+ if	[[ $(pacman -Qq "${2}" 2>/dev/null | aursift 2>/dev/null | grep -v 'virtual dep' | grep -v 'No matches') = "${2}" ]]; then
 
 	. aurt-info --pkginfoprint2 "${2}"
 
@@ -349,15 +367,20 @@ fi
 if	[[ -n $(pacman -Qq "${2}" 2>/dev/null) ]]; then
 
 	. aurt-info --pkginfoprint3 "${2}"
-
+    # ------------------------------------------------------------------------# EDITED MAY 9 2019, WAS: pacman -Sii --color=always "${2}"
 	addinfo
-	pacman -Sii --color=always "${2}"
+	pacman -Si "${2}" | grep Repository ; pacman -Qii "${2}"
+	echo "Package URL     : https://www.archlinux.org/packages/extra/x86_64/${2}"
+	pacman -Sii "${2}" | grep 'Download Size\|MD5 Sum\|SHA-256 Sum\|Signatures'
 
 	exit
 fi
    # ----------------------------------------------------------------------------------------# IS NOT INSTALLED, WANT INFO ?
 
-if	[[ $(pacman -Ssq "${2}" 2>/dev/null | aursift 2>/dev/null |awk '/^'"${2}"'$/') = "${2}" ]] &&
+		# if [[ $(pacman -Ssq "${2}" 2>/dev/null|aursift 2>/dev/null |awk '/^'"${2}"'$/') = "${2}" ]] && # Added: | grep -v 'virtual dep'
+
+if	[[ $(pacman -Ssq "${2}" 2>/dev/null | aursift 2>/dev/null | grep -v 'virtual dep' | awk '/^'"${2}"'$/') = "${2}" ]] && 
+
 	[[ $(auracle search --quiet ^"${2}"$) = "${2}" ]]; then
 
 	. aurt-info --pkginfoprint5 "${2}"
@@ -365,7 +388,11 @@ if	[[ $(pacman -Ssq "${2}" 2>/dev/null | aursift 2>/dev/null |awk '/^'"${2}"'$/'
 	addinfo
 	auracle info "${2}" ; exit
 fi
-if	[[ -z $(pacman -Ssq "${2}" 2>/dev/null | aursift 2>/dev/null |awk '/^'"${2}"'$/') ]] &&
+
+			# if [[ -z $(pacman -Ssq "${2}" 2>/dev/null | aursift 2>/dev/null |awk '/^'"${2}"'$/') ]] && # Added: | grep -v 'virtual dep'
+
+ if	[[ -z $(pacman -Ssq "${2}" 2>/dev/null | aursift 2>/dev/null | grep -v 'virtual dep' | awk '/^'"${2}"'$/') ]] &&
+
 	[[ $(auracle search --quiet ^"${2}"$) = "${2}" ]]; then
 
 	. aurt-info --pkginfoprint5 "${2}"
@@ -378,7 +405,7 @@ if	[[ $(pacman -Ssq "${2}" 2>/dev/null |awk '/^'"${2}"'$/') = "${2}" ]]; then
 	. aurt-info --pkginfoprint4 "${2}"
 
 	addinfo
-	pacman -Sii --color=always "${2}" ; exit
+	pacman -Sii --color=always "${2}" ; echo "Package URL     : https://www.archlinux.org/packages/extra/x86_64/${2}" ; exit
 fi
 }
    #=================================================== PACKAGELIST =====================================================
@@ -386,7 +413,9 @@ fi
 packagelist () {
 
 	sudo pacsync aur &>/dev/null
-	readarray -t pkglst <<< "$(pacman -Qq| aursift 2>/dev/null)"
+							# readarray -t pkglst <<< "$(pacman -Qq | aursift 2>/dev/null)" # Added: grep -v 'virtual dep'
+
+	readarray -t pkglst <<< "$(pacman -Qq | aursift 2>/dev/null | grep -v 'virtual dep')"
 
 	. aurt-info --packagelistprint1
 	echo "${pkglst[@]}"
@@ -399,19 +428,27 @@ packagelist () {
 	echo
 }
    #=================================================== MAKEDEPZ ======================================================
-### SC2046: Quote this to prevent word splitting. [2 places, quoting breaks function]
+
+# [1]= original version of above command
+# [2]= second   "
 
 makedepz () {
 
 	. aurt-info --makedepz1
+	pacman -Slq aur | xargs auracle info -F '{makedepends}' | xargs -n1 | sort | awk -F'<|>|=' '!seen[$0]++ {print $1}' >/tmp/mdz
 
-	auracle info -F '{makedepends}' $(pacman -Qq | aursift 2>/dev/null) | \
-	fmt -1 | awk -F'<|>|=' '{print $1}' | awk '!seen[$0]++' | awk 'NF' | sort >/tmp/mdz
+#[1] auracle info -F '{makedepends}' $(pacman -Qq | aursift 2>/dev/null)|fmt -1|awk -F'<|>|=' '{print $1}'|awk '!seen[$0]++'|awk 'NF'|sort >/tmp/mdz 
+#[2] auracle info -F '{makedepends}' $(pacman -Slq aur) | xargs -n1 | sort | uniq | awk -F'<|>|=' '{print $1}' >/tmp/mdz
 
 	cat /tmp/mdz
 
 	. aurt-info --makedepz2
-	pacman -Qq $(cat /tmp/mdz) 2>&1 1>/dev/null | awk -F"'" '{print $2}' | awk '!seen[$0]++' | sort ; echo
+	pacman -T - < /tmp/mdz
+	echo
+
+#[1] pacman -Qq $(cat /tmp/mdz) 2>&1 1>/dev/null | awk -F"'" '{print $2}' | awk '!seen[$0]++' | sort ; echo
+#[2] pacman -T $(< /tmp/mdz)
+
 }
    #===================================================== ORPH ==========================================================
 

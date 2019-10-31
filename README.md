@@ -1,3 +1,8 @@
+## Oct 30 2019
+
+Fixes for pacman 5.2 update.
+
+
 ## Feb 13 2019
 
 This script ONLY works with aurutils version 1.5. It will not work with the current aurutils 2.0. <br>
