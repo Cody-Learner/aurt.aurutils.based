@@ -13,7 +13,10 @@ Aurt, aurt-info, and aurt-setup are currently in alpha phase. The feature set an
 These scripts have been tested on my system managing around 100 AUR packages. All the rough edges I've encountered so far have been worked out at this point.
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 718c8bb3c3b2fe39c03af234637f3cb9468b3547
 ## June 15 2021
 
 I'm still using Aurt, although I stopped posting updates due to requiring an outdated version of aurutils as a dependency... <br>
@@ -31,15 +34,21 @@ KC, I'll keep you posted and share the code as it progresses.                   
 Fixes for pacman 5.2 update.
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 718c8bb3c3b2fe39c03af234637f3cb9468b3547
 ## Feb 13 2019
 
 This script ONLY works with aurutils version 1.5. It will not work with the current aurutils 2.0. <br>
 For now, I'm staying on aurutils 1.5. until something else cause breakage of aurt. <br>
 It's unlikely I'll rewrite aurt for aurutils 2.0 until it becomes unusable using aurutils 1.5.
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 718c8bb3c3b2fe39c03af234637f3cb9468b3547
 ## May 15 2018
 To simplify testing without risking the health of or cluttering up your system, I've got the container image working pretty well at this point. Just git clone the repo: https://github.com/Cody-Learner/Arch-Image.git   If your Arch install is using systemd, follow the online guide: https://github.com/Cody-Learner/Arch-Image , start the container image and run the two on board scripts following the provided instructions. These scripts are necessary to keep the image compact enough to distribute here. <br>
 
