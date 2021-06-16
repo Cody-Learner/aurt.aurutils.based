@@ -7,7 +7,6 @@
 # set -euo pipefail
 # IFS=$'\n\t'
 
-
 export PAGER=mc
 export AURDEST="${HOME}"/z-AUR-Aurt.git/
 pdate=$(date '+%Y-%m-%d')
