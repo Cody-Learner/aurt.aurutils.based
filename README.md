@@ -1,3 +1,13 @@
+## June 15 2021
+
+I'm still using Aurt, although I stopped posting updates due to requiring an outdated version of aurutils as a dependency... <br>
+I'll go ahead and say it. I'm kinda lazy and if it aint't broke, don't fix it?.                                              <br>
+Been contemplating a complete rewrite of Aurt to drop aurutils and most other dependencies for a long time now.              <br>
+Then pacman 6.0 comes along and breaks a feature aurt relied on in the obsolete version of aurutils.                         <br>
+Two years should be enough time to procastinate, yes? So now I've began writing the new version of Aurt.                     <br>
+It'll probably be a while till it's done enough to put up here though if continue the pattern. (some see them) lol           <br>                                   
+KC, I'll keep you posted and share the code as it progresses.                                                                <br>
+
 ## Oct 30 2019
 
 Fixes for pacman 5.2 update.
