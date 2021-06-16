@@ -1,8 +1,4 @@
 ## Aurt, AUR helper (aurutils wrapper-script)
-![aurt-ss1](https://user-images.githubusercontent.com/36802396/52738932-9f851b80-2f84-11e9-9247-d55733d6e87b.png)
-Individual screenshots: https://cody-learner.github.io/
-Combined: https://cody-learner.github.io/combined.html
-
 
 Aurt is an Arch Linux AUR helper, wrapper-script around aurutils.
 
@@ -12,6 +8,10 @@ Aurt is intended to ease the transition into setting up and using aurutils. Auru
 Aurt, aurt-info, and aurt-setup are currently in alpha phase. The feature set and or scripts are not stable. The aurt-setup script is ran once to automate the setup for aurutils. The aurt script is accompanied by and uses the aurt-info script to provide user feedback when using aurt. Place the scripts in $PATH for default, out of the box operation.
 
 These scripts have been tested on my system managing around 100 AUR packages. All the rough edges I've encountered so far have been worked out at this point.
+
+![aurt-ss1](https://user-images.githubusercontent.com/36802396/52738932-9f851b80-2f84-11e9-9247-d55733d6e87b.png)
+Individual screenshots: https://cody-learner.github.io/
+Combined: https://cody-learner.github.io/combined.html
 
 
 
