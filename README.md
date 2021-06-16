@@ -1,27 +1,3 @@
-## June 15 2021
-
-I'm still using Aurt, although I stopped posting updates due to requiring an outdated version of aurutils as a dependency... <br>
-I'll go ahead and say it. I'm kinda lazy and if it aint't broke, don't fix it?.                                              <br>
-Been contemplating a complete rewrite of Aurt to drop aurutils and most other dependencies for a long time now.              <br>
-Then pacman 6.0 comes along and breaks a feature aurt relied on in the obsolete version of aurutils.                         <br>
-Two years should be enough time to procastinate, yes? So now I've began writing the new version of Aurt.                     <br>
-It'll probably be a while till it's done enough to put up here though if continue the pattern. (some see them) lol           <br>                                   
-KC, I'll keep you posted and share the code as it progresses.                                                                <br>
-
-## Oct 30 2019
-
-Fixes for pacman 5.2 update.
-
-
-## Feb 13 2019
-
-This script ONLY works with aurutils version 1.5. It will not work with the current aurutils 2.0. <br>
-For now, I'm staying on aurutils 1.5. until something else cause breakage of aurt. <br>
-It's unlikely I'll rewrite aurt for aurutils 2.0 until it becomes unusable using aurutils 1.5.
-
-<br>
-<br>
-
 ## Aurt, AUR helper (aurutils wrapper-script)
 ![aurt-ss1](https://user-images.githubusercontent.com/36802396/52738932-9f851b80-2f84-11e9-9247-d55733d6e87b.png)
 Individual screenshots: https://cody-learner.github.io/
@@ -35,6 +11,30 @@ Aurt is intended to ease the transition into setting up and using aurutils. Auru
 Aurt, aurt-info, and aurt-setup are currently in alpha phase. The feature set and or scripts are not stable. The aurt-setup script is ran once to automate the setup for aurutils. The aurt script is accompanied by and uses the aurt-info script to provide user feedback when using aurt. Place the scripts in $PATH for default, out of the box operation.
 
 These scripts have been tested on my system managing around 100 AUR packages. All the rough edges I've encountered so far have been worked out at this point.
+
+
+## June 15 2021
+
+I'm still using Aurt, although I stopped posting updates due to requiring an outdated version of aurutils as a dependency... <br>
+I'll go ahead and say it. I'm kinda lazy and if it aint't broke, don't fix it?.                                              <br>
+Been contemplating a complete rewrite of Aurt to drop aurutils and most other dependencies for a long time now.              <br>
+Then pacman 6.0 comes along and breaks a feature aurt relied on in the obsolete version of aurutils.                         <br>
+Two years should be enough time to procastinate, yes? So now I've began writing the new version of Aurt.                     <br>
+It'll probably be a while till it's done enough to put up here though if continue the pattern. (some see them) lol           <br>
+KC, I'll keep you posted and share the code as it progresses.                                                                <br>
+
+
+
+## Oct 30 2019
+
+Fixes for pacman 5.2 update.
+
+
+## Feb 13 2019
+
+This script ONLY works with aurutils version 1.5. It will not work with the current aurutils 2.0. <br>
+For now, I'm staying on aurutils 1.5. until something else cause breakage of aurt. <br>
+It's unlikely I'll rewrite aurt for aurutils 2.0 until it becomes unusable using aurutils 1.5.
 
 ## May 15 2018
 To simplify testing without risking the health of or cluttering up your system, I've got the container image working pretty well at this point. Just git clone the repo: https://github.com/Cody-Learner/Arch-Image.git   If your Arch install is using systemd, follow the online guide: https://github.com/Cody-Learner/Arch-Image , start the container image and run the two on board scripts following the provided instructions. These scripts are necessary to keep the image compact enough to distribute here. <br>
